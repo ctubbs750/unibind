@@ -1,0 +1,36 @@
+from snakemake.utils import min_version
+
+
+# Configuration
+configfile: "config/config.yaml"
+
+
+# Settings
+min_version("7.32.4")
+
+
+# Define modules
+module unibind:
+    snakefile:
+        "rules/unibind.smk"
+    config:
+        config["UNIBIND"]
+
+
+# Import modules
+use rule * from unibind as unibind_*
+
+
+###
+# Rules
+###
+
+
+rule all:
+    message:
+        """
+        DEPLOYING UNIBIND...
+        """
+    input:
+        rules.unibind_all.input,
+    default_target: True
