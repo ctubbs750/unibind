@@ -44,7 +44,7 @@ def organize_files(extension: str) -> None:
         Path(f"{OP_FOLDER}/{tf_name}/{profile}").mkdir(parents=True, exist_ok=True)
         for path in filepaths:
             filename = path.stem
-            move(path, f"{OP_FOLDER}/{tf_name}/{profile}/{filename}")
+            move(path, f"{OP_FOLDER}/{tf_name}/{profile}/{filename}.{extension}")
 
 
 def main():
