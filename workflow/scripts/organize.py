@@ -7,16 +7,17 @@ from pandas import DataFrame
 # Snakemake parameters
 IP_FOLDER = snakemake.input[0]  # type: ignore
 OP_FOLDER = snakemake.output[0]  # type: ignore
+EXTENSION = snakemake.params[0]  # type: ignore
 
 ###
 # Functions
 ###
 
 
-def main():
-    """"""
+def organize_files(extension: str) -> None:
+    """Orgnaizes Unibind download directories into TF/profile/datasets format"""
     # File imfo
-    paths = [i for i in Path(IP_FOLDER).glob("*/*.bed")]
+    paths = [i for i in Path(IP_FOLDER).glob(f"*/*.{extension}")]
     stems = [i.stem for i in paths]
 
     # Convert to frame
@@ -44,6 +45,11 @@ def main():
         for path in filepaths:
             filename = path.stem
             move(path, f"{OP_FOLDER}/{tf_name}/{profile}/{filename}")
+
+
+def main():
+    """Main program"""
+    organize_files(EXTENSION)
 
 
 # ------------- #

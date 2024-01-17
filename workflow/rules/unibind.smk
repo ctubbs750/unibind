@@ -5,7 +5,7 @@ from snakemake.utils import min_version
 configfile: "config/config.yaml"
 
 
-# Parameters TODO: think about how this working when doing the same in scan...
+# Parameters
 PWMS_URL = config["urls"]["pwms"]
 TFBS_URL = config["urls"]["tfbs"]
 
@@ -49,7 +49,9 @@ rule unpack_unibind_pwms:
     input:
         rules.download_unibind_pwms.output,
     output:
-        temp(directory("resources/data/unibind/unibind/damo_hg38_PWMs_unpacked")),
+        temp(directory("resources/data/unibind/damo_hg38_PWMs")),
+    params:
+        outdir="resources/data/unibind"
     log:
         stdout="workflow/logs/unpack_unibind_pwms.stdout",
         stderr="workflow/logs/unpack_unibind_pwms.stderr",
@@ -58,32 +60,52 @@ rule unpack_unibind_pwms:
     threads: 1
     shell:
         """
-        mkdir -p {output} && tar -xzf {input} -C {output}
+        mkdir -p {output} && tar -xzf {input} -C {params.outdir}
         """
 
 
-rule flatten_unibind_pwms:
+# rule flatten_unibind_pwms:
+#     message:
+#         """
+#         Flattens unpacked tarbell. Not great - for the moment just check for creation of first in OP.
+#         Also removes all the empty dirs.
+#         """
+#     input:
+#         rules.unpack_unibind_pwms.output,
+#     output:
+#         directory("resources/data/unibind/damo_hg38_PWMS"),
+#     log:
+#         stdout="workflow/logs/flatten_unibind_pwms.stdout",
+#         stderr="workflow/logs/flatten_unibind_pwms.stderr",
+#     conda:
+#         "../envs/unibind.yaml"
+#     threads: 1
+#     shell:
+#         """
+#         mkdir {output};
+#         find {input} -mindepth 2 -type f -exec mv -t {output} -i '{{}}' + &&
+#         find {input} -type d -empty -delete
+#         """
+
+rule organize_pwms:
     message:
         """
-        Flattens unpacked tarbell. Not great - for the moment just check for creation of first in OP.
-        Also removes all the empty dirs.
+        Orgnzies UniBind damo PWMS by TF and profile
         """
     input:
         rules.unpack_unibind_pwms.output,
     output:
         directory("resources/data/unibind/damo_hg38_PWMS"),
+    params: 
+        extension="pwm"
     log:
-        stdout="workflow/logs/flatten_unibind_pwms.stdout",
-        stderr="workflow/logs/flatten_unibind_pwms.stderr",
+        stdout="workflow/logs/organize_pwms.stdout",
+        stderr="workflow/logs/organize_pwms.stderr",
     conda:
         "../envs/unibind.yaml"
     threads: 1
-    shell:
-        """
-        mkdir {output} &&
-        find {input} -mindepth 2 -type f -exec mv -t {output} -i '{{}}' + &&
-        find {input} -type d -empty -delete
-        """
+    script:
+        "../scripts/organize.py"
 
 
 rule download_unibind_tfbs:
@@ -130,7 +152,7 @@ rule unpack_unibind_tfbs:
         """
 
 
-rule organize_files:
+rule organize_tfbs:
     message:
         """
         Orgnzies UniBind damos by TF and profile
@@ -139,6 +161,8 @@ rule organize_files:
         rules.unpack_unibind_tfbs.output,
     output:
         directory("resources/data/unibind/damo_hg38_TFBS"),
+    params: 
+        extension="bed"
     log:
         stdout="workflow/logs/organize_files.stdout",
         stderr="workflow/logs/organize_files.stderr",
