@@ -1,22 +1,51 @@
+from os import listdir, path
 from snakemake.utils import min_version
-
-
-# Configuration
-configfile: "config/config.yaml"
-
-
-# Parameters
-PWMS_URL = config["urls"]["pwms"]
-TFBS_URL = config["urls"]["tfbs"]
 
 # Settings
 min_version("7.32.4")
 
 
+# ------------- #
+# Config        #
+# ------------- #
+
+PWMS_URL = config["urls"]["pwms"]
+TFBS_URL = config["urls"]["tfbs"]
+OUTP_DIR = config["install_dir"]
+
+# ------------- #
+# I/O           #
+# ------------- #
+
+# Raw PWM and TFBS download
+PWMS_DOWNLOAD = os.path.join(OUTP_DIR, "damo_hg38_PWMs.tar.gz")
+TFBS_DOWNLOAD = os.path.join(OUTP_DIR, "damo_hg38_TFBS_per_TF.tar.gz")
+
+# Unpacked PWMs
+PWMS_UNPACKED = os.path.join(OUTP_DIR, "damo_hg38_PWMs")
+TFBS_UNPACKED = os.path.join(OUTP_DIR, "damo_hg38_TFBS_per_TF")
+
+# Orgnaized PWMs
+PWMS_ORGANIZED = os.path.join(OUTP_DIR, "damo_hg38_PWMS")
+TFBS_ORGANIZED = os.path.join(OUTP_DIR, "damo_hg38_TFBS")
+
+
+# ------------- #
+# Params        #
+# ------------- #
+
+# Extensions on PWMs and TFBS downloads
+EXTENSIONS = {"pwms": "pwm", "tfbs": "bed"}
+
+# ------------- #
+# Rules         #
+# ------------- #
+
+
 rule all:
     input:
-        "resources/data/unibind/damo_hg38_PWMS",
-        "resources/data/unibind/damo_hg38_TFBS",
+        PWMS_ORGANIZED,
+        TFBS_ORGANIZED,
     default_target: True
 
 
@@ -26,7 +55,7 @@ rule download_unibind_pwms:
         Downloads all PWMS from UniBind database
         """
     output:
-        temp("resources/data/unibind/damo_hg38_PWMs.tar.gz"),
+        temp(PWMS_DOWNLOAD),
     params:
         url=PWMS_URL,
     log:
@@ -49,9 +78,9 @@ rule unpack_unibind_pwms:
     input:
         rules.download_unibind_pwms.output,
     output:
-        temp(directory("resources/data/unibind/damo_hg38_PWMs")),
+        temp(directory(PWMS_UNPACKED)),
     params:
-        outdir="resources/data/unibind"
+        outdir="resources/data/unibind",
     log:
         stdout="workflow/logs/unpack_unibind_pwms.stdout",
         stderr="workflow/logs/unpack_unibind_pwms.stderr",
@@ -64,29 +93,6 @@ rule unpack_unibind_pwms:
         """
 
 
-# rule flatten_unibind_pwms:
-#     message:
-#         """
-#         Flattens unpacked tarbell. Not great - for the moment just check for creation of first in OP.
-#         Also removes all the empty dirs.
-#         """
-#     input:
-#         rules.unpack_unibind_pwms.output,
-#     output:
-#         directory("resources/data/unibind/damo_hg38_PWMS"),
-#     log:
-#         stdout="workflow/logs/flatten_unibind_pwms.stdout",
-#         stderr="workflow/logs/flatten_unibind_pwms.stderr",
-#     conda:
-#         "../envs/unibind.yaml"
-#     threads: 1
-#     shell:
-#         """
-#         mkdir {output};
-#         find {input} -mindepth 2 -type f -exec mv -t {output} -i '{{}}' + &&
-#         find {input} -type d -empty -delete
-#         """
-
 rule organize_pwms:
     message:
         """
@@ -95,9 +101,9 @@ rule organize_pwms:
     input:
         rules.unpack_unibind_pwms.output,
     output:
-        directory("resources/data/unibind/damo_hg38_PWMS"),
-    params: 
-        extension="pwm"
+        directory(PWMS_ORGANIZED),
+    params:
+        extension=EXTENSIONS["pwms"],
     log:
         stdout="workflow/logs/organize_pwms.stdout",
         stderr="workflow/logs/organize_pwms.stderr",
@@ -114,7 +120,7 @@ rule download_unibind_tfbs:
         Downloads all TFBSs from UniBind database
         """
     output:
-        temp("resources/data/unibind/damo_hg38_TFBS_per_TF.tar.gz"),
+        temp(TFBS_DOWNLOAD),
     params:
         url=TFBS_URL,
     log:
@@ -137,9 +143,9 @@ rule unpack_unibind_tfbs:
     input:
         rules.download_unibind_tfbs.output,
     output:
-        temp(directory("resources/data/unibind/damo_hg38_TFBS_per_TF")),
+        temp(directory(TFBS_UNPACKED)),
     params:
-        outdir="resources/data/unibind"
+        outdir=OUTP_DIR,
     log:
         stdout="workflow/logs/unpack_unibind_tfbs.stdout",
         stderr="workflow/logs/unpack_unibind_tfbs.stderr",
@@ -160,9 +166,9 @@ rule organize_tfbs:
     input:
         rules.unpack_unibind_tfbs.output,
     output:
-        directory("resources/data/unibind/damo_hg38_TFBS"),
-    params: 
-        extension="bed"
+        directory(TFBS_ORGANIZED),
+    params:
+        extension=EXTENSIONS["tfbs"],
     log:
         stdout="workflow/logs/organize_files.stdout",
         stderr="workflow/logs/organize_files.stderr",

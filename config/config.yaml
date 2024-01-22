@@ -2,3 +2,4 @@ UNIBIND:
   urls:
     pwms: https://unibind.uio.no/static/data/20220914/bulk_Robust/Homo_sapiens/damo_hg38_PWMs.tar.gz
     tfbs: https://unibind.uio.no/static/data/20220914/bulk_Robust/Homo_sapiens/damo_hg38_TFBS_per_TF.tar.gz
+  install_dir: resources/data/unibind
