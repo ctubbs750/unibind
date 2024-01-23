@@ -9,26 +9,35 @@ min_version("7.32.4")
 # Config        #
 # ------------- #
 
+
 PWMS_URL = config["urls"]["pwms"]
 TFBS_URL = config["urls"]["tfbs"]
-OUTP_DIR = config["install_dir"]
+INSTALL_DIR = config["install_dir"]
+PROCESS_DIR = config["process_dir"]
 
 # ------------- #
 # I/O           #
 # ------------- #
 
 # Raw PWM and TFBS download
-PWMS_DOWNLOAD = os.path.join(OUTP_DIR, "damo_hg38_PWMs.tar.gz")
-TFBS_DOWNLOAD = os.path.join(OUTP_DIR, "damo_hg38_TFBS_per_TF.tar.gz")
+PWMS_DOWNLOAD = os.path.join(INSTALL_DIR, "damo_hg38_PWMs.tar.gz")
+TFBS_DOWNLOAD = os.path.join(INSTALL_DIR, "damo_hg38_TFBS_per_TF.tar.gz")
 
 # Unpacked PWMs
-PWMS_UNPACKED = os.path.join(OUTP_DIR, "damo_hg38_PWMs")
-TFBS_UNPACKED = os.path.join(OUTP_DIR, "damo_hg38_TFBS_per_TF")
+PWMS_UNPACKED = os.path.join(INSTALL_DIR, "damo_hg38_PWMs")
+TFBS_UNPACKED = os.path.join(INSTALL_DIR, "damo_hg38_TFBS_per_TF")
 
 # Orgnaized PWMs
-PWMS_ORGANIZED = os.path.join(OUTP_DIR, "damo_hg38_PWMS")
-TFBS_ORGANIZED = os.path.join(OUTP_DIR, "damo_hg38_TFBS")
+PWMS_ORGANIZED = os.path.join(PROCESS_DIR, "damo_hg38_PWMS")
+TFBS_ORGANIZED = os.path.join(PROCESS_DIR, "damo_hg38_TFBS")
 
+# All species IDs for each profile and just those that are human
+PROFILE_MAPPING = os.path.join(PROCESS_DIR, "profile_mapping.txt")
+PROFILE_MAPPING_FILTERED = os.path.join(PROCESS_DIR, "profile_mapping_filtered.txt")
+
+# Final human specific datasetes
+PWMS_ORGANIZED_FILTER = os.path.join(PROCESS_DIR, "damo_hg38_PWMS_filter")
+TFBS_ORGANIZED_FILTER = os.path.join(PROCESS_DIR, "damo_hg38_TFBS_filter")
 
 # ------------- #
 # Params        #
@@ -46,6 +55,8 @@ rule all:
     input:
         PWMS_ORGANIZED,
         TFBS_ORGANIZED,
+        PWMS_ORGANIZED_FILTER,
+        TFBS_ORGANIZED_FILTER,
     default_target: True
 
 
@@ -55,7 +66,7 @@ rule download_unibind_pwms:
         Downloads all PWMS from UniBind database
         """
     output:
-        temp(PWMS_DOWNLOAD),
+        PWMS_DOWNLOAD,
     params:
         url=PWMS_URL,
     log:
@@ -101,7 +112,7 @@ rule organize_pwms:
     input:
         rules.unpack_unibind_pwms.output,
     output:
-        directory(PWMS_ORGANIZED),
+        temp(directory(PWMS_ORGANIZED)),
     params:
         extension=EXTENSIONS["pwms"],
     log:
@@ -120,7 +131,7 @@ rule download_unibind_tfbs:
         Downloads all TFBSs from UniBind database
         """
     output:
-        temp(TFBS_DOWNLOAD),
+        TFBS_DOWNLOAD,
     params:
         url=TFBS_URL,
     log:
@@ -145,7 +156,7 @@ rule unpack_unibind_tfbs:
     output:
         temp(directory(TFBS_UNPACKED)),
     params:
-        outdir=OUTP_DIR,
+        outdir=INSTALL_DIR,
     log:
         stdout="workflow/logs/unpack_unibind_tfbs.stdout",
         stderr="workflow/logs/unpack_unibind_tfbs.stderr",
@@ -166,7 +177,7 @@ rule organize_tfbs:
     input:
         rules.unpack_unibind_tfbs.output,
     output:
-        directory(TFBS_ORGANIZED),
+        temp(directory(TFBS_ORGANIZED)),
     params:
         extension=EXTENSIONS["tfbs"],
     log:
@@ -177,3 +188,92 @@ rule organize_tfbs:
     threads: 1
     script:
         "../scripts/organize.py"
+
+
+rule profile_mapping:
+    message:
+        """
+        Confirms each profile is homo sapiens.
+        """
+    input:
+        rules.organize_pwms.output,
+    output:
+        PROFILE_MAPPING,
+    log:
+        stdout="workflow/logs/check_human_profile.stdout",
+        stderr="workflow/logs/check_human_profile.stderr",
+    conda:
+        "../envs/unibind.yaml"
+    threads: 1
+    shell:
+        """
+        coreapi get https://jaspar.elixir.no/api/v1/docs/
+        readarray -t profiles < <(find {input} -mindepth 2 -maxdepth 2 -name '*M*' -type d -exec basename {{}}  \;)
+        for profile in "${{profiles[@]}}";
+        do
+            echo "$profile"
+            query=$(coreapi action matrix read -p matrix_id="$profile") || query="NaN"
+
+            tf_species=$(echo $query | jq '.species.[].name' | tr -d "\n") || species="NaN"
+            tf_name=$(echo $query | jq '.name' | tr -d "\n") || tf_name="NaN"
+            tf_class=$(echo $query | jq '.class[]' | tr -d "\n") || tf_class="NaN"
+            tf_family=$(echo $query | jq '.family[]' | tr -d "\n") || tf_family="NaN"
+            tf_source=$(echo $query | jq '.source' | tr -d "\n") || tf_source="NaN"
+
+            printf '%s %s %s %s %s %s\n' "$tf_name" "$profile" "$tf_species" "$tf_class" "$tf_family" "$tf_source" >> {output}
+        done
+        """
+
+
+rule filter_tf_targets:
+    message:
+        """
+        Reduces list of profiles to just thoe that are human and non-redundant.
+        """
+    input:
+        rules.profile_mapping.output,
+    output:
+        PROFILE_MAPPING_FILTERED,
+    conda:
+        "../envs/unibind.yaml"
+    log:
+        stdout="workflow/logs/filter_tf_targets.stdout",
+        stderr="workflow/logs/filter_tf_targets.stderr",
+    threads: 1
+    script:
+        "../scripts/profiles.py"
+
+
+rule reduce_data_to_filter:
+    message:
+        """
+        Reducess downloaded data to those that are human
+        """
+    input:
+        pwms=rules.organize_pwms.output,
+        tfbs=rules.organize_tfbs.output,
+        profiles=rules.filter_tf_targets.output,
+    output:
+        pwms=directory(PWMS_ORGANIZED_FILTER),
+        tfbs=directory(TFBS_ORGANIZED_FILTER),
+    conda:
+        "../envs/unibind.yaml"
+    log:
+        stdout="workflow/logs/reduce_data_to_filter.stdout",
+        stderr="workflow/logs/reduce_data_to_filter.stderr",
+    threads: 1
+    shell:
+        """
+        while read p; do
+            # Extract line info
+            tf_name=$(echo "$p" | awk '{{print $1}}')
+            echo $tf_name
+            profile=$(echo "$p" | awk '{{print $2}}')
+            # Setup dirs
+            mkdir -p {output.pwms}/${{tf_name}}
+            mkdir -p {output.tfbs}/${{tf_name}}
+            # Move relevant dir/files to output
+            cp -r {input.pwms}/${{tf_name}}/${{profile}} {output.pwms}/${{tf_name}}
+            cp -r {input.tfbs}/${{tf_name}}/${{profile}} {output.tfbs}/${{tf_name}}
+        done < {input.profiles}
+        """
