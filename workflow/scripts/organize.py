@@ -1,55 +1,50 @@
-#!/usr/bin/python
+""""""
 
 from pathlib import Path
-from shutil import move
-from pandas import DataFrame
+import os
+import pandas as pd
 
 # Snakemake parameters
 IP_FOLDER = snakemake.input[0]  # type: ignore
 OP_FOLDER = snakemake.output[0]  # type: ignore
 EXTENSION = snakemake.params[0]  # type: ignore
 
-###
-# Functions
-###
+# ------------- #
+# Functions     #
+# ------------- #
 
 
-def organize_files(extension: str) -> None:
-    """Orgnaizes Unibind download directories into TF/profile/datasets format"""
-    # File imfo
-    paths = [i for i in Path(IP_FOLDER).glob(f"*/*.{extension}")]
-    stems = [i.stem for i in paths]
+def organize_files(extension: str, ip_folder: str, op_folder: str) -> None:
+    """Organizes Unibind download directories into TF/profile/datasets format"""
+    # Get all files with the given extension
+    paths = list(Path(ip_folder).rglob(f"*.{extension}"))
 
-    # Convert to frame
-    df = DataFrame(list(zip(paths, stems)), columns=["path", "info"])
+    # Create a DataFrame with file paths and info
+    df = pd.DataFrame({"path": paths, "info": [p.stem for p in paths]})
 
-    # Break UniBind label into fields
+    # Split the info into different fields
     df[["exp_id", "celltype", "tf_name", "profile_root", "profile_stem", "damo"]] = df[
         "info"
     ].str.split(".", expand=True)
 
-    # Make profile tag
+    # Create a profile tag
     df["profile"] = df["profile_root"] + "." + df["profile_stem"]
 
     # Group by all unique TF/profiles
-    grouped = df.groupby(["tf_name", "profile"])["path"].unique().reset_index()
+    grouped = df.groupby(["tf_name", "profile"])["path"].apply(list).reset_index()
 
-    # Loop over groups
+    # Loop over groups and move files
     for row in grouped.itertuples():
-        tf_name = row.tf_name
-        profile = row.profile
-        filepaths = row.path
+        dest_dir = Path(op_folder) / row.tf_name / row.profile
+        dest_dir.mkdir(parents=True, exist_ok=True)
 
-        # Move files
-        Path(f"{OP_FOLDER}/{tf_name}/{profile}").mkdir(parents=True, exist_ok=True)
-        for path in filepaths:
-            filename = path.stem
-            move(path, f"{OP_FOLDER}/{tf_name}/{profile}/{filename}.{extension}")
+        for path in row.path:
+            os.rename(path, dest_dir / path.name)
 
 
 def main():
     """Main program"""
-    organize_files(EXTENSION)
+    organize_files(EXTENSION, IP_FOLDER, OP_FOLDER)
 
 
 # ------------- #

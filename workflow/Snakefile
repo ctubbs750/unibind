@@ -28,9 +28,6 @@ use rule * from unibind as unibind_*
 
 rule all:
     message:
-        """
-        DEPLOYING UNIBIND...
-        """
+        "DEPLOYING UNIBIND..."
     input:
         rules.unibind_all.input,
-    default_target: True

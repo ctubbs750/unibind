@@ -57,198 +57,160 @@ rule all:
         TFBS_ORGANIZED,
         PWMS_ORGANIZED_FILTER,
         TFBS_ORGANIZED_FILTER,
-    default_target: True
 
 
 rule download_unibind_pwms:
     message:
-        """
-        Downloads all PWMS from UniBind database
-        """
+        "Downloads all PWMS from UniBind database"
     output:
         PWMS_DOWNLOAD,
     params:
         url=PWMS_URL,
     log:
-        stdout="workflow/logs/download_unibind_pwms.stdout",
-        stderr="workflow/logs/download_unibind_pwms.stderr",
+        stdout=expand("workflow/logs/{rule}.stdout", rule="download_unibind_pwms"),
+        stderr=expand("workflow/logs/{rule}.stderr", rule="download_unibind_pwms"),
     conda:
         "../envs/unibind.yaml"
     threads: 1
     shell:
-        """
-        curl -o {output} {params.url}
-        """
+        "curl -o {output} {params.url}"
 
 
 rule unpack_unibind_pwms:
     message:
-        """
-        Unpacks UniBind PWM download
-        """
+        "Unpacks UniBind PWM download"
     input:
         rules.download_unibind_pwms.output,
     output:
         temp(directory(PWMS_UNPACKED)),
     params:
-        outdir="resources/data/unibind",
+        outdir=lambda w, input: os.path.dirname(input[0]),
     log:
-        stdout="workflow/logs/unpack_unibind_pwms.stdout",
-        stderr="workflow/logs/unpack_unibind_pwms.stderr",
+        stdout=expand("workflow/logs/{rule}.stdout", rule="unpack_unibind_pwms"),
+        stderr=expand("workflow/logs/{rule}.stderr", rule="unpack_unibind_pwms"),
     conda:
         "../envs/unibind.yaml"
-    threads: 1
     shell:
-        """
-        mkdir -p {output} && tar -xzf {input} -C {params.outdir}
-        """
+        "tar -xzf {input} -C {params.outdir}"
 
 
 rule organize_pwms:
     message:
-        """
-        Orgnzies UniBind damo PWMS by TF and profile
-        """
+        "Organizes UniBind damo PWMS by TF and profile"
     input:
         rules.unpack_unibind_pwms.output,
     output:
         temp(directory(PWMS_ORGANIZED)),
     params:
         extension=EXTENSIONS["pwms"],
+        script="../scripts/organize.py",
     log:
-        stdout="workflow/logs/organize_pwms.stdout",
-        stderr="workflow/logs/organize_pwms.stderr",
+        stdout=expand("workflow/logs/{rule}.stdout", rule="organize_pwms"),
+        stderr=expand("workflow/logs/{rule}.stderr", rule="organize_pwms"),
     conda:
         "../envs/unibind.yaml"
     threads: 1
     script:
-        "../scripts/organize.py"
+        "{params.script}"
 
 
 rule download_unibind_tfbs:
     message:
-        """
-        Downloads all TFBSs from UniBind database
-        """
+        "Downloads all TFBSs from UniBind database"
     output:
         TFBS_DOWNLOAD,
     params:
         url=TFBS_URL,
     log:
-        stdout="workflow/logs/download_unibind_tfbs.stdout",
-        stderr="workflow/logs/download_unibind_tfbs.stderr",
+        stdout=expand("workflow/logs/{rule}.stdout", rule="download_unibind_tfbs"),
+        stderr=expand("workflow/logs/{rule}.stderr", rule="download_unibind_tfbs"),
     conda:
         "../envs/unibind.yaml"
     threads: 1
     shell:
-        """
-        curl -o {output} {params.url}
-        """
+        "curl -o {output} {params.url}"
 
 
 rule unpack_unibind_tfbs:
     message:
-        """
-        Unpacks UniBind TFBS download
-        """
+        "Unpacks UniBind TFBS download"
     input:
         rules.download_unibind_tfbs.output,
     output:
         temp(directory(TFBS_UNPACKED)),
     params:
-        outdir=INSTALL_DIR,
+        outdir=lambda w, input: os.path.dirname(input[0]),
     log:
-        stdout="workflow/logs/unpack_unibind_tfbs.stdout",
-        stderr="workflow/logs/unpack_unibind_tfbs.stderr",
+        stdout=expand("workflow/logs/{rule}.stdout", rule="unpack_unibind_tfbs"),
+        stderr=expand("workflow/logs/{rule}.stderr", rule="unpack_unibind_tfbs"),
     conda:
         "../envs/unibind.yaml"
     threads: 1
     shell:
-        """
-        mkdir -p {output} && tar -xzf {input} -C {params.outdir}
-        """
+        "tar -xzf {input} -C {params.outdir}"
 
 
 rule organize_tfbs:
     message:
-        """
-        Orgnzies UniBind damos by TF and profile
-        """
+        "Organizes UniBind damos by TF and profile"
     input:
         rules.unpack_unibind_tfbs.output,
     output:
         temp(directory(TFBS_ORGANIZED)),
     params:
         extension=EXTENSIONS["tfbs"],
+        script="../scripts/organize.py",
     log:
-        stdout="workflow/logs/organize_files.stdout",
-        stderr="workflow/logs/organize_files.stderr",
+        stdout=expand("workflow/logs/{rule}.stdout", rule="organize_tfbs"),
+        stderr=expand("workflow/logs/{rule}.stderr", rule="organize_tfbs"),
     conda:
         "../envs/unibind.yaml"
     threads: 1
     script:
-        "../scripts/organize.py"
+        "{params.script}"
 
 
 rule profile_mapping:
     message:
-        """
-        Confirms each profile is homo sapiens.
-        """
+        "Confirms each profile is homo sapiens."
     input:
         rules.organize_pwms.output,
     output:
         PROFILE_MAPPING,
+    params:
+        script="../scripts/mapping.py",
     log:
-        stdout="workflow/logs/check_human_profile.stdout",
-        stderr="workflow/logs/check_human_profile.stderr",
+        stdout=expand("workflow/logs/{rule}.stdout", rule="profile_mapping"),
+        stderr=expand("workflow/logs/{rule}.stderr", rule="profile_mapping"),
     conda:
         "../envs/unibind.yaml"
     threads: 1
-    shell:
-        """
-        coreapi get https://jaspar.elixir.no/api/v1/docs/
-        readarray -t profiles < <(find {input} -mindepth 2 -maxdepth 2 -name '*M*' -type d -exec basename {{}}  \;)
-        for profile in "${{profiles[@]}}";
-        do
-            echo "$profile"
-            query=$(coreapi action matrix read -p matrix_id="$profile") || query="NaN"
-
-            tf_species=$(echo $query | jq '.species.[].name' | tr -d "\n") || species="NaN"
-            tf_name=$(echo $query | jq '.name' | tr -d "\n") || tf_name="NaN"
-            tf_class=$(echo $query | jq '.class[]' | tr -d "\n") || tf_class="NaN"
-            tf_family=$(echo $query | jq '.family[]' | tr -d "\n") || tf_family="NaN"
-            tf_source=$(echo $query | jq '.source' | tr -d "\n") || tf_source="NaN"
-
-            printf '%s %s %s %s %s %s\n' "$tf_name" "$profile" "$tf_species" "$tf_class" "$tf_family" "$tf_source" >> {output}
-        done
-        """
+    script:
+        "{params.script}"
 
 
 rule filter_tf_targets:
     message:
-        """
-        Reduces list of profiles to just thoe that are human and non-redundant.
-        """
+        "Reduces list of profiles to just those that are human and non-redundant."
     input:
         rules.profile_mapping.output,
     output:
         PROFILE_MAPPING_FILTERED,
+    params:
+        script="../scripts/profiles.py",
+    log:
+        stdout=expand("workflow/logs/{rule}.stdout", rule="filter_tf_targets"),
+        stderr=expand("workflow/logs/{rule}.stderr", rule="filter_tf_targets"),
     conda:
         "../envs/unibind.yaml"
-    log:
-        stdout="workflow/logs/filter_tf_targets.stdout",
-        stderr="workflow/logs/filter_tf_targets.stderr",
     threads: 1
     script:
-        "../scripts/profiles.py"
+        "{params.script}"
 
 
 rule reduce_data_to_filter:
     message:
-        """
-        Reducess downloaded data to those that are human
-        """
+        "Reduces downloaded data to those that are human"
     input:
         pwms=rules.organize_pwms.output,
         tfbs=rules.organize_tfbs.output,
@@ -256,24 +218,13 @@ rule reduce_data_to_filter:
     output:
         pwms=directory(PWMS_ORGANIZED_FILTER),
         tfbs=directory(TFBS_ORGANIZED_FILTER),
+    params:
+        script="../scripts/reduce.py",
+    log:
+        stdout=expand("workflow/logs/{rule}.stdout", rule="reduce_data_to_filter"),
+        stderr=expand("workflow/logs/{rule}.stderr", rule="reduce_data_to_filter"),
     conda:
         "../envs/unibind.yaml"
-    log:
-        stdout="workflow/logs/reduce_data_to_filter.stdout",
-        stderr="workflow/logs/reduce_data_to_filter.stderr",
     threads: 1
-    shell:
-        """
-        while read p; do
-            # Extract line info
-            tf_name=$(echo "$p" | awk '{{print $1}}')
-            echo $tf_name
-            profile=$(echo "$p" | awk '{{print $2}}')
-            # Setup dirs
-            mkdir -p {output.pwms}/${{tf_name}}
-            mkdir -p {output.tfbs}/${{tf_name}}
-            # Move relevant dir/files to output
-            cp -r {input.pwms}/${{tf_name}}/${{profile}} {output.pwms}/${{tf_name}}
-            cp -r {input.tfbs}/${{tf_name}}/${{profile}} {output.tfbs}/${{tf_name}}
-        done < {input.profiles}
-        """
+    script:
+        "{params.script}"

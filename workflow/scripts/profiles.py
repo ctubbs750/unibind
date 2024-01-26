@@ -1,4 +1,4 @@
-#!/usr/bin/python
+""""""
 
 from pandas import read_csv
 
@@ -6,43 +6,66 @@ from pandas import read_csv
 PROFILES_MAP = snakemake.input[0]  # type: ignore
 OUTPUT = snakemake.output[0]  # type: ignore
 
-###
-# Functions
-###
+
+# ------------- #
+# Functions     #
+# ------------- #
+
+
+def save_mapping(mapping, output):
+    """Save the final mapping to a TSV file."""
+    mapping.to_csv(output, index=False, sep="\t", header=False)
 
 
 def main() -> None:
-    """"""
-    # Read map
-    names = ["tf_name", "profile", "species", "class", "family", "source"]
-    dtype = [str, str, str, str, str, str]
+    """
+    Main function to read the profiles map and extract profile version.
+    """
+    # Define column names and types
+    names = [
+        "tf_name",
+        "profile",
+        "species",
+        "class",
+        "family",
+        "source",
+        "profile_length",
+    ]
+    dtype = {name: str for name in names}
+
+    # Read the profiles map
     mapping = read_csv(
         PROFILES_MAP,
         header=None,
-        delim_whitespace=True,
+        sep="\t",
         names=names,
-        dtype=dict(zip(names, dtype)),
+        dtype=dtype,
     )
 
     # Extract profile version
-    mapping["version"] = [i[1] for i in mapping["profile"].str.split(".")]
+    mapping["version"] = mapping["profile"].str.split(".", expand=True)[1]
 
-    #  Extract linked names [id1]::[id2]
-    mapping["tf_name"] = [i[0] for i in mapping["tf_name"].astype(str).str.split(":")]
+    # Extract linked names [id1]::[id2]
+    mapping["tf_name"] = mapping["tf_name"].str.split(":", expand=True)[0]
 
     # A handful of manual corrections
-    # TBXT=T, PPARA=RXRA keep RXRA, NR4A2==RXRA, NR1H4=RXRA, FOSB==JUN
-    mapping["tf_name"] = mapping["tf_name"].replace(
-        {"TBXT": "T", "PPARA": "RXRA", "NR4A2": "RXRA", "NR1H4": "RXRA", "FOSB": "JUN"}
-    )
+    corrections = {
+        "TBXT": "T",
+        "PPARA": "RXRA",
+        "NR4A2": "RXRA",
+        "NR1H4": "RXRA",
+        "FOSB": "JUN",
+    }
+    mapping["tf_name"].replace(corrections, inplace=True)
 
     # Reduce set to human
     mapping = mapping[mapping["species"] == "Homo sapiens"]
 
     # Add a leading 1 to source for sorting
-    mapping["source"] = ["1" + i if i == "ReMap" else i for i in mapping["source"]]
+    mapping.loc[mapping["source"] == "ReMap", "source"] = "1ReMap"
+    mapping.loc[mapping["source"] == "ENCODE", "source"] = "1ENCODE"
 
-    # Selects on most recent version first, then source of ReMap over individual experiment
+    # Sort by most recent version first, then source of ReMap over individual experiment
     mapping.sort_values(
         by=["tf_name", "version", "source"], ascending=[True, False, True], inplace=True
     )
@@ -51,7 +74,7 @@ def main() -> None:
     mapping.drop_duplicates(subset=["tf_name"], keep="first", inplace=True)
 
     # Save final mapping
-    mapping.to_csv(OUTPUT, index=False, sep=" ", header=False)
+    save_mapping(mapping, OUTPUT)
 
 
 # ------------- #
