@@ -39,6 +39,9 @@ PROFILE_MAPPING_FILTERED = os.path.join(PROCESS_DIR, "profile_mapping_filtered.t
 PWMS_ORGANIZED_FILTER = os.path.join(PROCESS_DIR, "damo_hg38_PWMS_filter")
 TFBS_ORGANIZED_FILTER = os.path.join(PROCESS_DIR, "damo_hg38_TFBS_filter")
 
+# Biosamples that failed
+BIOSAMPLE_FAILS = os.path.join(PROCESS_DIR, "biosample_fails.txt")
+
 # ------------- #
 # Params        #
 # ------------- #
@@ -53,10 +56,9 @@ EXTENSIONS = {"pwms": "pwm", "tfbs": "bed"}
 
 rule all:
     input:
-        PWMS_ORGANIZED,
-        TFBS_ORGANIZED,
         PWMS_ORGANIZED_FILTER,
         TFBS_ORGANIZED_FILTER,
+        BIOSAMPLE_FAILS,
 
 
 rule download_unibind_pwms:
@@ -71,7 +73,6 @@ rule download_unibind_pwms:
         stderr=expand("workflow/logs/{rule}.stderr", rule="download_unibind_pwms"),
     conda:
         "../envs/unibind.yaml"
-    threads: 1
     shell:
         "curl -o {output} {params.url}"
 
@@ -109,7 +110,6 @@ rule organize_pwms:
         stderr=expand("workflow/logs/{rule}.stderr", rule="organize_pwms"),
     conda:
         "../envs/unibind.yaml"
-    threads: 1
     script:
         "{params.script}"
 
@@ -126,7 +126,6 @@ rule download_unibind_tfbs:
         stderr=expand("workflow/logs/{rule}.stderr", rule="download_unibind_tfbs"),
     conda:
         "../envs/unibind.yaml"
-    threads: 1
     shell:
         "curl -o {output} {params.url}"
 
@@ -145,7 +144,6 @@ rule unpack_unibind_tfbs:
         stderr=expand("workflow/logs/{rule}.stderr", rule="unpack_unibind_tfbs"),
     conda:
         "../envs/unibind.yaml"
-    threads: 1
     shell:
         "tar -xzf {input} -C {params.outdir}"
 
@@ -165,7 +163,6 @@ rule organize_tfbs:
         stderr=expand("workflow/logs/{rule}.stderr", rule="organize_tfbs"),
     conda:
         "../envs/unibind.yaml"
-    threads: 1
     script:
         "{params.script}"
 
@@ -184,7 +181,6 @@ rule profile_mapping:
         stderr=expand("workflow/logs/{rule}.stderr", rule="profile_mapping"),
     conda:
         "../envs/unibind.yaml"
-    threads: 1
     script:
         "{params.script}"
 
@@ -203,7 +199,6 @@ rule filter_tf_targets:
         stderr=expand("workflow/logs/{rule}.stderr", rule="filter_tf_targets"),
     conda:
         "../envs/unibind.yaml"
-    threads: 1
     script:
         "{params.script}"
 
@@ -225,6 +220,24 @@ rule reduce_data_to_filter:
         stderr=expand("workflow/logs/{rule}.stderr", rule="reduce_data_to_filter"),
     conda:
         "../envs/unibind.yaml"
-    threads: 1
+    script:
+        "{params.script}"
+
+
+rule reduct_data_biosamples:
+    message:
+        "Reduces downloaded data to those that have resonable PWMs"
+    input:
+        pwms=rules.organize_pwms.output,
+        tfbs=rules.organize_tfbs.output,
+    output:
+        BIOSAMPLE_FAILS,
+    params:
+        script="../scripts/biosamples.py",
+    log:
+        stdout=expand("workflow/logs/{rule}.stdout", rule="reduct_data_biosamples"),
+        stderr=expand("workflow/logs/{rule}.stderr", rule="reduct_data_biosamples"),
+    conda:
+        "../envs/unibind.yaml"
     script:
         "{params.script}"

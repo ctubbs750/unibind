@@ -8,7 +8,7 @@ dependencies:
   - _openmp_mutex=4.5=2_gnu
   - brotli-python=1.1.0=py312h30efb56_1
   - bzip2=1.0.8=hd590300_5
-  - ca-certificates=2023.11.17=hbcca054_0
+  - ca-certificates=2024.2.2=hbcca054_0
   - certifi=2023.11.17=pyhd8ed1ab_0
   - charset-normalizer=3.3.2=pyhd8ed1ab_0
   - click=8.1.7=unix_pyh707e725_0
@@ -38,7 +38,7 @@ dependencies:
   - ncurses=6.4=h59595ed_2
   - numpy=1.26.3=py312heda63a1_0
   - oniguruma=6.9.9=hd590300_0
-  - openssl=3.2.0=hd590300_1
+  - openssl=3.2.1=hd590300_0
   - pandas=2.1.4=py312hfb8ada1_0
   - pip=23.3.2=pyhd8ed1ab_0
   - pysocks=1.7.1=pyha2e5f31_6
@@ -51,6 +51,7 @@ dependencies:
   - pytz=2023.3.post1=pyhd8ed1ab_0
   - readline=8.2=h8228510_1
   - requests=2.31.0=pyhd8ed1ab_0
+  - scipy=1.12.0=py312heda63a1_2
   - setuptools=69.0.3=pyhd8ed1ab_0
   - six=1.16.0=pyh6c4a22f_0
   - tk=8.6.13=noxft_h4845f30_101
