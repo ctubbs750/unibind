@@ -1,0 +1,36 @@
+Building DAG of jobs...
+Your conda installation is not configured to use strict channel priorities. This is however crucial for having robust and correct environments (for details, see https://conda-forge.org/docs/user/tipsandtricks.html). Please consider to configure strict priorities by executing 'conda config --set channel_priority strict'.
+Using shell: /usr/bin/bash
+Provided cores: 24
+Rules claiming more threads will be scaled down.
+Job stats:
+job                              count
+-----------------------------  -------
+unibind_all                          1
+unibind_reduce_data_to_filter        1
+total                                2
+
+Select jobs to execute...
+
+[Thu Jan 25 15:12:56 2024]
+Job 7: Reduces downloaded data to those that are human
+Reason: Missing output files: results/unibind/damo_hg38_PWMS_filter, results/unibind/damo_hg38_TFBS_filter
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+[Thu Jan 25 15:12:57 2024]
+Error in rule unibind_reduce_data_to_filter:
+    jobid: 7
+    input: results/unibind/damo_hg38_PWMS, results/unibind/damo_hg38_TFBS, results/unibind/profile_mapping_filtered.txt
+    output: results/unibind/damo_hg38_PWMS_filter, results/unibind/damo_hg38_TFBS_filter
+    log: workflow/logs/reduce_data_to_filter.stdout, workflow/logs/reduce_data_to_filter.stderr (check log file(s) for error details)
+    conda-env: /home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+
+RuleException:
+CalledProcessError in file /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/unibind/workflow/rules/unibind.smk, line 413:
+Command 'source /panfs/accrepfs.vampire/home/tubbsca/miniforge-pypy3/bin/activate '/home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_'; set -euo pipefail;  python /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/unibind/.snakemake/scripts/tmpayvnn4um.reduce.py' returned non-zero exit status 1.
+  File "/panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/unibind/workflow/rules/unibind.smk", line 413, in __rule_reduce_data_to_filter
+  File "/accre/arch/easybuild/software/BinDist/Anaconda3/2022.05/lib/python3.9/concurrent/futures/thread.py", line 58, in run
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2024-01-25T151251.593082.snakemake.log

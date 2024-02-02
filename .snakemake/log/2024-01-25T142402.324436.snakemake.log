@@ -1,0 +1,49 @@
+Building DAG of jobs...
+Your conda installation is not configured to use strict channel priorities. This is however crucial for having robust and correct environments (for details, see https://conda-forge.org/docs/user/tipsandtricks.html). Please consider to configure strict priorities by executing 'conda config --set channel_priority strict'.
+Using shell: /usr/bin/bash
+Provided cores: 24
+Rules claiming more threads will be scaled down.
+Job stats:
+job                              count
+-----------------------------  -------
+unibind_all                          1
+unibind_filter_tf_targets            1
+unibind_profile_mapping              1
+unibind_reduce_data_to_filter        1
+total                                4
+
+Select jobs to execute...
+
+[Thu Jan 25 14:24:07 2024]
+Job 9: Confirms each profile is homo sapiens.
+Reason: Missing output files: results/unibind/profile_mapping.txt
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+[Thu Jan 25 14:27:58 2024]
+Finished job 9.
+1 of 4 steps (25%) done
+Select jobs to execute...
+
+[Thu Jan 25 14:27:58 2024]
+Job 8: Reduces list of profiles to just those that are human and non-redundant.
+Reason: Missing output files: results/unibind/profile_mapping_filtered.txt; Input files updated by another job: results/unibind/profile_mapping.txt
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+[Thu Jan 25 14:28:01 2024]
+Error in rule unibind_filter_tf_targets:
+    jobid: 8
+    input: results/unibind/profile_mapping.txt
+    output: results/unibind/profile_mapping_filtered.txt
+    log: workflow/logs/filter_tf_targets.stdout, workflow/logs/filter_tf_targets.stderr (check log file(s) for error details)
+    conda-env: /home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+
+RuleException:
+CalledProcessError in file /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/unibind/workflow/rules/unibind.smk, line 391:
+Command 'source /panfs/accrepfs.vampire/home/tubbsca/miniforge-pypy3/bin/activate '/home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_'; set -euo pipefail;  python /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/unibind/.snakemake/scripts/tmp2nkpqjdq.profiles.py' returned non-zero exit status 1.
+  File "/panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/unibind/workflow/rules/unibind.smk", line 391, in __rule_filter_tf_targets
+  File "/accre/arch/easybuild/software/BinDist/Anaconda3/2022.05/lib/python3.9/concurrent/futures/thread.py", line 58, in run
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2024-01-25T142402.324436.snakemake.log

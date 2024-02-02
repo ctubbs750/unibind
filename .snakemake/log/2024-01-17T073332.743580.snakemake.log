@@ -1,0 +1,37 @@
+Building DAG of jobs...
+Your conda installation is not configured to use strict channel priorities. This is however crucial for having robust and correct environments (for details, see https://conda-forge.org/docs/user/tipsandtricks.html). Please consider to configure strict priorities by executing 'conda config --set channel_priority strict'.
+Using shell: /usr/bin/bash
+Provided cores: 24
+Rules claiming more threads will be scaled down.
+Job stats:
+job                      count
+---------------------  -------
+all                          1
+unibind_organize_pwms        1
+total                        2
+
+Select jobs to execute...
+
+[Wed Jan 17 07:33:37 2024]
+Job 1: 
+        Orgnzies UniBind damo PWMS by TF and profile
+        
+Reason: Missing output files: resources/data/unibind/damo_hg38_PWMS
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/14baf7ea6f1c85f1266357917be3722d_
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/14baf7ea6f1c85f1266357917be3722d_
+[Wed Jan 17 07:34:02 2024]
+Finished job 1.
+1 of 2 steps (50%) done
+Select jobs to execute...
+
+[Wed Jan 17 07:34:02 2024]
+Job 0: 
+        DEPLOYING UNIBIND...
+        
+Reason: Input files updated by another job: resources/data/unibind/damo_hg38_PWMS
+
+[Wed Jan 17 07:34:02 2024]
+Finished job 0.
+2 of 2 steps (100%) done
+Complete log: .snakemake/log/2024-01-17T073332.743580.snakemake.log

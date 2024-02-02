@@ -1,0 +1,53 @@
+Building DAG of jobs...
+Your conda installation is not configured to use strict channel priorities. This is however crucial for having robust and correct environments (for details, see https://conda-forge.org/docs/user/tipsandtricks.html). Please consider to configure strict priorities by executing 'conda config --set channel_priority strict'.
+Creating conda environment workflow/envs/unibind.yaml...
+Downloading and installing remote packages.
+Environment for /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/unibind/workflow/rules/../envs/unibind.yaml created (location: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/8bcdcfe0cf522c0fe672f4db468b0f0a_)
+Using shell: /usr/bin/bash
+Provided cores: 24
+Rules claiming more threads will be scaled down.
+Job stats:
+job                              count
+-----------------------------  -------
+all                                  1
+unibind_download_unibind_pwms        1
+unibind_flatten_unibind_pwms         1
+unibind_unpack_unibind_pwms          1
+total                                4
+
+Select jobs to execute...
+
+[Mon Jan 15 11:49:24 2024]
+Job 3: 
+        Downloads all PWMS from UniBind database
+        
+Reason: Missing output files: resources/data/unibind/damo_hg38_PWMs.tar.gz
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/8bcdcfe0cf522c0fe672f4db468b0f0a_
+[Mon Jan 15 11:49:29 2024]
+Finished job 3.
+1 of 4 steps (25%) done
+Select jobs to execute...
+
+[Mon Jan 15 11:49:29 2024]
+Job 2: 
+        Unpacks UniBind PWM download
+        
+Reason: Missing output files: resources/data/unibind/resources/data/unibind/damo_hg38_PWMs_unpacked; Input files updated by another job: resources/data/unibind/damo_hg38_PWMs.tar.gz
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/8bcdcfe0cf522c0fe672f4db468b0f0a_
+Terminating processes on user request, this might take some time.
+[Mon Jan 15 11:50:38 2024]
+Error in rule unibind_unpack_unibind_pwms:
+    jobid: 2
+    input: resources/data/unibind/damo_hg38_PWMs.tar.gz
+    output: resources/data/unibind/resources/data/unibind/damo_hg38_PWMs_unpacked
+    log: workflow/logs/unpack_unibind_pwms.stdout, workflow/logs/unpack_unibind_pwms.stderr (check log file(s) for error details)
+    conda-env: /home/tubbsca/snakemake_condas/8bcdcfe0cf522c0fe672f4db468b0f0a_
+    shell:
+        
+        mkdir -p resources/data/unibind/resources/data/unibind/damo_hg38_PWMs_unpacked && tar -xzf resources/data/unibind/damo_hg38_PWMs.tar.gz -C resources/data/unibind/resources/data/unibind/damo_hg38_PWMs_unpacked
+        
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Complete log: .snakemake/log/2024-01-15T114655.952231.snakemake.log

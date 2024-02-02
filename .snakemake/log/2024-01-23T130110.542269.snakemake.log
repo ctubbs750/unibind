@@ -1,0 +1,33 @@
+Building DAG of jobs...
+Your conda installation is not configured to use strict channel priorities. This is however crucial for having robust and correct environments (for details, see https://conda-forge.org/docs/user/tipsandtricks.html). Please consider to configure strict priorities by executing 'conda config --set channel_priority strict'.
+Using shell: /usr/bin/bash
+Provided cores: 24
+Rules claiming more threads will be scaled down.
+Job stats:
+job                              count
+-----------------------------  -------
+all                                  1
+unibind_reduce_data_to_filter        1
+total                                2
+
+Select jobs to execute...
+
+[Tue Jan 23 13:01:14 2024]
+Job 7: 
+        Reducess downloaded data to those that are human
+        
+Reason: Missing output files: results/unibind/damo_hg38_TFBS_filter, results/unibind/damo_hg38_PWMS_filter
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+ImproperOutputException in rule unibind_reduce_data_to_filter in file /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/unibind/workflow/rules/unibind.smk, line 249:
+Outputs of incorrect type (directories when expecting files or vice versa). Output directories must be flagged with directory(). for rule unibind_reduce_data_to_filter:
+    output: results/unibind/damo_hg38_PWMS_filter, results/unibind/damo_hg38_TFBS_filter
+    affected files:
+        results/unibind/damo_hg38_PWMS_filter
+Removing output files of failed job unibind_reduce_data_to_filter since they might be corrupted:
+results/unibind/damo_hg38_PWMS_filter, results/unibind/damo_hg38_TFBS_filter
+Skipped removing non-empty directory results/unibind/damo_hg38_PWMS_filter
+Skipped removing non-empty directory results/unibind/damo_hg38_TFBS_filter
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2024-01-23T130110.542269.snakemake.log

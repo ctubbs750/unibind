@@ -1,0 +1,100 @@
+Building DAG of jobs...
+Your conda installation is not configured to use strict channel priorities. This is however crucial for having robust and correct environments (for details, see https://conda-forge.org/docs/user/tipsandtricks.html). Please consider to configure strict priorities by executing 'conda config --set channel_priority strict'.
+Using shell: /usr/bin/bash
+Provided cores: 24
+Rules claiming more threads will be scaled down.
+Job stats:
+job                            count
+---------------------------  -------
+all                                1
+unibind_check_human_profile        1
+unibind_organize_pwms              1
+unibind_organize_tfbs              1
+unibind_unpack_unibind_pwms        1
+unibind_unpack_unibind_tfbs        1
+total                              6
+
+Select jobs to execute...
+
+[Mon Jan 22 15:16:55 2024]
+Job 5: 
+        Unpacks UniBind TFBS download
+        
+Reason: Missing output files: resources/data/unibind/damo_hg38_TFBS_per_TF
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+
+[Mon Jan 22 15:16:55 2024]
+Job 2: 
+        Unpacks UniBind PWM download
+        
+Reason: Missing output files: resources/data/unibind/damo_hg38_PWMs
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+[Mon Jan 22 15:18:33 2024]
+Finished job 2.
+1 of 6 steps (17%) done
+Select jobs to execute...
+
+[Mon Jan 22 15:18:33 2024]
+Job 1: 
+        Orgnzies UniBind damo PWMS by TF and profile
+        
+Reason: Missing output files: results/unibind/damo_hg38_PWMS; Input files updated by another job: resources/data/unibind/damo_hg38_PWMs
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+[Mon Jan 22 15:19:23 2024]
+Finished job 1.
+2 of 6 steps (33%) done
+Removing temporary output resources/data/unibind/damo_hg38_PWMs.
+Select jobs to execute...
+
+[Mon Jan 22 15:19:33 2024]
+Job 7: 
+        Confirms each profile is homo sapiens.
+        
+Reason: Input files updated by another job: results/unibind/damo_hg38_PWMS; Code has changed since last execution
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+[Mon Jan 22 15:19:39 2024]
+Error in rule unibind_check_human_profile:
+    jobid: 7
+    input: results/unibind/damo_hg38_PWMS
+    output: results/unibind/species_profiles.txt
+    log: workflow/logs/check_human_profile.stdout, workflow/logs/check_human_profile.stderr (check log file(s) for error details)
+    conda-env: /home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+    shell:
+        
+        coreapi get https://jaspar.elixir.no/api/v1/docs/
+        readarray -t profiles < <(find results/unibind/damo_hg38_PWMS -mindepth 2 -maxdepth 2 -name '*M*' -type d -exec basename {}  \;)
+        for profile in "${profiles[@]}";
+        do
+            echo "$profile"
+            query=$(coreapi action matrix read -p matrix_id="$profile")
+            tf_species=$(echo $query | jq '.species.[].name') || species="NaN"
+            tf_name=$(echo $query | jq '.name') || tf_name="NaN"
+            tf_class=$(echo $query | jq '.class[]') || tf_name="NaN"
+            tf_family=$(echo $query | jq '.family[]') || tf_name="NaN"
+            tf_source=$(echo $query | jq '.source') || tf_name="NaN"
+            printf '%s %s %s %s %s
+' "$tf_name" "$profile" "$tf_species" "$tf_class" "$tf_family" "$tf_sources" >> results/unibind/species_profiles.txt
+        done
+        
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Terminating processes on user request, this might take some time.
+[Mon Jan 22 15:20:52 2024]
+Error in rule unibind_unpack_unibind_tfbs:
+    jobid: 5
+    input: resources/data/unibind/damo_hg38_TFBS_per_TF.tar.gz
+    output: resources/data/unibind/damo_hg38_TFBS_per_TF
+    log: workflow/logs/unpack_unibind_tfbs.stdout, workflow/logs/unpack_unibind_tfbs.stderr (check log file(s) for error details)
+    conda-env: /home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+    shell:
+        
+        mkdir -p resources/data/unibind/damo_hg38_TFBS_per_TF && tar -xzf resources/data/unibind/damo_hg38_TFBS_per_TF.tar.gz -C resources/data/unibind
+        
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Complete log: .snakemake/log/2024-01-22T151645.059134.snakemake.log

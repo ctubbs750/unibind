@@ -1,0 +1,52 @@
+Building DAG of jobs...
+Your conda installation is not configured to use strict channel priorities. This is however crucial for having robust and correct environments (for details, see https://conda-forge.org/docs/user/tipsandtricks.html). Please consider to configure strict priorities by executing 'conda config --set channel_priority strict'.
+Using shell: /usr/bin/bash
+Provided cores: 24
+Rules claiming more threads will be scaled down.
+Job stats:
+job                        count
+-----------------------  -------
+all                            1
+unibind_profile_mapping        1
+total                          2
+
+Select jobs to execute...
+
+[Tue Jan 23 07:10:32 2024]
+Job 7: 
+        Confirms each profile is homo sapiens.
+        
+Reason: Missing output files: results/unibind/profile_mapping.txt
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+Terminating processes on user request, this might take some time.
+[Tue Jan 23 07:10:53 2024]
+Error in rule unibind_profile_mapping:
+    jobid: 7
+    input: results/unibind/damo_hg38_PWMS
+    output: results/unibind/profile_mapping.txt
+    log: workflow/logs/check_human_profile.stdout, workflow/logs/check_human_profile.stderr (check log file(s) for error details)
+    conda-env: /home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+    shell:
+        
+        coreapi get https://jaspar.elixir.no/api/v1/docs/
+        readarray -t profiles < <(find results/unibind/damo_hg38_PWMS -mindepth 2 -maxdepth 2 -name '*M*' -type d -exec basename {}  \;)
+        for profile in "${profiles[@]}";
+        do
+            echo "$profile"
+            query=$(coreapi action matrix read -p matrix_id="$profile") || query="NaN"
+
+            tf_species=$(echo $query | jq '.species.[].name' | tr -d "
+") || species="NaN"
+            tf_name=$(echo $query | jq '.name') || tf_name="NaN"
+            tf_class=$(echo $query | jq '.class[]') || tf_class="NaN"
+            tf_family=$(echo $query | jq '.family[]') || tf_family="NaN"
+            tf_source=$(echo $query | jq '.source') || tf_source="NaN"
+
+            printf '%s %s %s %s %s %s
+' "$tf_name" "$profile" "$tf_species" "$tf_class" "$tf_family" "$tf_source" >> results/unibind/profile_mapping.txt
+        done
+        
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Complete log: .snakemake/log/2024-01-23T071028.355882.snakemake.log

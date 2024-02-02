@@ -1,0 +1,65 @@
+Building DAG of jobs...
+Your conda installation is not configured to use strict channel priorities. This is however crucial for having robust and correct environments (for details, see https://conda-forge.org/docs/user/tipsandtricks.html). Please consider to configure strict priorities by executing 'conda config --set channel_priority strict'.
+Using shell: /usr/bin/bash
+Provided cores: 24
+Rules claiming more threads will be scaled down.
+Job stats:
+job                            count
+---------------------------  -------
+all                                1
+unibind_check_human_profile        1
+unibind_organize_tfbs              1
+unibind_unpack_unibind_tfbs        1
+total                              4
+
+Select jobs to execute...
+
+[Mon Jan 22 14:00:07 2024]
+Job 5: 
+        Unpacks UniBind TFBS download
+        
+Reason: Forced execution
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+
+[Mon Jan 22 14:00:07 2024]
+Job 7: 
+        Confirms each profile is homo sapiens.
+        
+Reason: Missing output files: results/unibind/species_profiles.txt; Code has changed since last execution
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+[Mon Jan 22 14:04:36 2024]
+Finished job 5.
+1 of 4 steps (25%) done
+Select jobs to execute...
+
+[Mon Jan 22 14:04:36 2024]
+Job 4: 
+        Orgnzies UniBind damos by TF and profile
+        
+Reason: Missing output files: results/unibind/damo_hg38_TFBS; Input files updated by another job: resources/data/unibind/damo_hg38_TFBS_per_TF
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+[Mon Jan 22 14:05:21 2024]
+Finished job 4.
+2 of 4 steps (50%) done
+Removing temporary output resources/data/unibind/damo_hg38_TFBS_per_TF.
+[Mon Jan 22 14:09:16 2024]
+Finished job 7.
+3 of 4 steps (75%) done
+Select jobs to execute...
+
+[Mon Jan 22 14:09:16 2024]
+Job 0: 
+        DEPLOYING UNIBIND...
+        
+Reason: Input files updated by another job: results/unibind/damo_hg38_TFBS, results/unibind/species_profiles.txt
+
+[Mon Jan 22 14:09:16 2024]
+Finished job 0.
+4 of 4 steps (100%) done
+Removing temporary output results/unibind/damo_hg38_PWMS.
+Removing temporary output results/unibind/damo_hg38_TFBS.
+Complete log: .snakemake/log/2024-01-22T135958.757306.snakemake.log

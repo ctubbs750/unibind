@@ -1,0 +1,50 @@
+Building DAG of jobs...
+Your conda installation is not configured to use strict channel priorities. This is however crucial for having robust and correct environments (for details, see https://conda-forge.org/docs/user/tipsandtricks.html). Please consider to configure strict priorities by executing 'conda config --set channel_priority strict'.
+Using shell: /usr/bin/bash
+Provided cores: 24
+Rules claiming more threads will be scaled down.
+Job stats:
+job                              count
+-----------------------------  -------
+unibind_all                          1
+unibind_filter_tf_targets            1
+unibind_reduce_data_to_filter        1
+total                                3
+
+Select jobs to execute...
+
+[Fri Jan 26 05:50:25 2024]
+Job 8: Reduces list of profiles to just those that are human and non-redundant.
+Reason: Missing output files: results/unibind/profile_mapping_filtered.txt
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+[Fri Jan 26 05:50:26 2024]
+Finished job 8.
+1 of 3 steps (33%) done
+Select jobs to execute...
+
+[Fri Jan 26 05:50:26 2024]
+Job 7: Reduces downloaded data to those that are human
+Reason: Missing output files: results/unibind/damo_hg38_PWMS_filter, results/unibind/damo_hg38_TFBS_filter; Input files updated by another job: results/unibind/profile_mapping_filtered.txt
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+[Fri Jan 26 05:53:51 2024]
+Finished job 7.
+2 of 3 steps (67%) done
+Select jobs to execute...
+
+[Fri Jan 26 05:53:51 2024]
+localrule unibind_all:
+    input: results/unibind/damo_hg38_PWMS, results/unibind/damo_hg38_TFBS, results/unibind/damo_hg38_PWMS_filter, results/unibind/damo_hg38_TFBS_filter
+    jobid: 0
+    reason: Input files updated by another job: results/unibind/damo_hg38_PWMS_filter, results/unibind/damo_hg38_TFBS_filter
+    resources: tmpdir=/tmp
+
+[Fri Jan 26 05:53:51 2024]
+Finished job 0.
+3 of 3 steps (100%) done
+Removing temporary output results/unibind/damo_hg38_PWMS.
+Removing temporary output results/unibind/damo_hg38_TFBS.
+Complete log: .snakemake/log/2024-01-26T055020.871641.snakemake.log

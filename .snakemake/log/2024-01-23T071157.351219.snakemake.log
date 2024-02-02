@@ -1,0 +1,38 @@
+Building DAG of jobs...
+Your conda installation is not configured to use strict channel priorities. This is however crucial for having robust and correct environments (for details, see https://conda-forge.org/docs/user/tipsandtricks.html). Please consider to configure strict priorities by executing 'conda config --set channel_priority strict'.
+Using shell: /usr/bin/bash
+Provided cores: 24
+Rules claiming more threads will be scaled down.
+Job stats:
+job                        count
+-----------------------  -------
+all                            1
+unibind_profile_mapping        1
+total                          2
+
+Select jobs to execute...
+
+[Tue Jan 23 07:12:01 2024]
+Job 7: 
+        Confirms each profile is homo sapiens.
+        
+Reason: Forced execution
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+[Tue Jan 23 07:15:58 2024]
+Finished job 7.
+1 of 2 steps (50%) done
+Select jobs to execute...
+
+[Tue Jan 23 07:15:58 2024]
+Job 0: 
+        DEPLOYING UNIBIND...
+        
+Reason: Input files updated by another job: results/unibind/profile_mapping.txt
+
+[Tue Jan 23 07:15:58 2024]
+Finished job 0.
+2 of 2 steps (100%) done
+Removing temporary output results/unibind/damo_hg38_PWMS.
+Removing temporary output results/unibind/damo_hg38_TFBS.
+Complete log: .snakemake/log/2024-01-23T071157.351219.snakemake.log

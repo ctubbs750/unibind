@@ -1,0 +1,8 @@
+Building DAG of jobs...
+InputFunctionException in rule unibind_unpack_unibind_tfbs in file /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/unibind/workflow/rules/unibind.smk, line 242:
+Error:
+  TypeError: <lambda>() got multiple values for argument 'input'
+Wildcards:
+
+Traceback:
+

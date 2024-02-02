@@ -1,0 +1,65 @@
+Building DAG of jobs...
+Your conda installation is not configured to use strict channel priorities. This is however crucial for having robust and correct environments (for details, see https://conda-forge.org/docs/user/tipsandtricks.html). Please consider to configure strict priorities by executing 'conda config --set channel_priority strict'.
+Using shell: /usr/bin/bash
+Provided cores: 24
+Rules claiming more threads will be scaled down.
+Job stats:
+job                              count
+-----------------------------  -------
+all                                  1
+unibind_download_unibind_tfbs        1
+unibind_organize_files               1
+unibind_unpack_unibind_tfbs          1
+total                                4
+
+Select jobs to execute...
+
+[Tue Jan 16 07:54:22 2024]
+Job 6: 
+        Downloads all TFBSs from UniBind database
+        
+Reason: Missing output files: resources/data/unibind/damo_hg38_TFBS_per_TF.tar.gz
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/14baf7ea6f1c85f1266357917be3722d_
+[Tue Jan 16 07:56:06 2024]
+Finished job 6.
+1 of 4 steps (25%) done
+Select jobs to execute...
+
+[Tue Jan 16 07:56:06 2024]
+Job 5: 
+        Unpacks UniBind TFBS download
+        
+Reason: Missing output files: resources/data/unibind/damo_hg38_TFBS_per_TF; Input files updated by another job: resources/data/unibind/damo_hg38_TFBS_per_TF.tar.gz; Code has changed since last execution; Params have changed since last execution
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/14baf7ea6f1c85f1266357917be3722d_
+[Tue Jan 16 08:00:40 2024]
+Finished job 5.
+2 of 4 steps (50%) done
+Removing temporary output resources/data/unibind/damo_hg38_TFBS_per_TF.tar.gz.
+Select jobs to execute...
+
+[Tue Jan 16 08:00:40 2024]
+Job 4: 
+        Orgnzies UniBind damos by TF and profile
+        
+Reason: Missing output files: resources/data/unibind/damo_hg38_TFBS_per_TF_unpacked_organized; Input files updated by another job: resources/data/unibind/damo_hg38_TFBS_per_TF
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/14baf7ea6f1c85f1266357917be3722d_
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/14baf7ea6f1c85f1266357917be3722d_
+[Tue Jan 16 08:01:15 2024]
+Finished job 4.
+3 of 4 steps (75%) done
+Removing temporary output resources/data/unibind/damo_hg38_TFBS_per_TF.
+Select jobs to execute...
+
+[Tue Jan 16 08:01:16 2024]
+Job 0: 
+        DEPLOYING UNIBIND...
+        
+Reason: Input files updated by another job: resources/data/unibind/damo_hg38_TFBS_per_TF_unpacked_organized
+
+[Tue Jan 16 08:01:16 2024]
+Finished job 0.
+4 of 4 steps (100%) done
+Complete log: .snakemake/log/2024-01-16T075417.292342.snakemake.log

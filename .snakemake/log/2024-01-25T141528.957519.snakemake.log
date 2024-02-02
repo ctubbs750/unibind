@@ -1,0 +1,37 @@
+Building DAG of jobs...
+Your conda installation is not configured to use strict channel priorities. This is however crucial for having robust and correct environments (for details, see https://conda-forge.org/docs/user/tipsandtricks.html). Please consider to configure strict priorities by executing 'conda config --set channel_priority strict'.
+Using shell: /usr/bin/bash
+Provided cores: 24
+Rules claiming more threads will be scaled down.
+Job stats:
+job                              count
+-----------------------------  -------
+unibind_all                          1
+unibind_filter_tf_targets            1
+unibind_profile_mapping              1
+unibind_reduce_data_to_filter        1
+total                                4
+
+Select jobs to execute...
+
+[Thu Jan 25 14:15:33 2024]
+Job 9: Confirms each profile is homo sapiens.
+Reason: Missing output files: results/unibind/profile_mapping.txt
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+Terminating processes on user request, this might take some time.
+[Thu Jan 25 14:17:31 2024]
+Error in rule unibind_profile_mapping:
+    jobid: 9
+    input: results/unibind/damo_hg38_PWMS
+    output: results/unibind/profile_mapping.txt
+    log: workflow/logs/profile_mapping.stdout, workflow/logs/profile_mapping.stderr (check log file(s) for error details)
+    conda-env: /home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+
+RuleException:
+CalledProcessError in file /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/unibind/workflow/rules/unibind.smk, line 353:
+Command 'source /panfs/accrepfs.vampire/home/tubbsca/miniforge-pypy3/bin/activate '/home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_'; set -euo pipefail;  python /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/unibind/.snakemake/scripts/tmpk0zttibg.mapping.py' died with <Signals.SIGINT: 2>.
+  File "/panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/unibind/workflow/rules/unibind.smk", line 353, in __rule_profile_mapping
+  File "/accre/arch/easybuild/software/BinDist/Anaconda3/2022.05/lib/python3.9/concurrent/futures/thread.py", line 58, in run
+Complete log: .snakemake/log/2024-01-25T141528.957519.snakemake.log

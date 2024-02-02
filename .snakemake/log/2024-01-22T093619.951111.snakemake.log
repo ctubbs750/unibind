@@ -1,0 +1,48 @@
+Building DAG of jobs...
+Your conda installation is not configured to use strict channel priorities. This is however crucial for having robust and correct environments (for details, see https://conda-forge.org/docs/user/tipsandtricks.html). Please consider to configure strict priorities by executing 'conda config --set channel_priority strict'.
+Creating conda environment workflow/envs/unibind.yaml...
+Downloading and installing remote packages.
+Environment for /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/unibind/workflow/rules/../envs/unibind.yaml created (location: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_)
+Using shell: /usr/bin/bash
+Provided cores: 24
+Rules claiming more threads will be scaled down.
+Job stats:
+job                            count
+---------------------------  -------
+all                                1
+unibind_check_human_profile        1
+total                              2
+
+Select jobs to execute...
+
+[Mon Jan 22 09:37:50 2024]
+Job 7: 
+        Confirms each profile is homo sapiens.
+        
+Reason: Missing output files: resources/data/unibind/human_profiles.txt
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+[Mon Jan 22 09:37:53 2024]
+Error in rule unibind_check_human_profile:
+    jobid: 7
+    input: resources/data/unibind/damo_hg38_PWMS
+    output: resources/data/unibind/human_profiles.txt
+    log: workflow/logs/check_human_profile.stdout, workflow/logs/check_human_profile.stderr (check log file(s) for error details)
+    conda-env: /home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+    shell:
+        
+        coreapi get https://jaspar.elixir.no/api/v1/docs/
+        profiles="$(find resources/data/unibind/damo_hg38_PWMS -mindepth 1 -name '*M*' -type d -exec basename {}  \;)"
+        for profile in "${profiles[@]}";
+        do
+            echo "$profile"
+            species="$(coreapi action matrix read -p matrix_id='$profile' | jq '.species.[].name')"
+            printf '%s %s
+' "$profile" "$species" >> resources/data/unibind/human_profiles.txt
+        done
+        
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2024-01-22T093619.951111.snakemake.log

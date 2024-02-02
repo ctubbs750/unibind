@@ -1,0 +1,106 @@
+Building DAG of jobs...
+Your conda installation is not configured to use strict channel priorities. This is however crucial for having robust and correct environments (for details, see https://conda-forge.org/docs/user/tipsandtricks.html). Please consider to configure strict priorities by executing 'conda config --set channel_priority strict'.
+Using shell: /usr/bin/bash
+Provided cores: 24
+Rules claiming more threads will be scaled down.
+Job stats:
+job                              count
+-----------------------------  -------
+all                                  1
+unibind_download_unibind_pwms        1
+unibind_download_unibind_tfbs        1
+unibind_organize_pwms                1
+unibind_organize_tfbs                1
+unibind_unpack_unibind_pwms          1
+unibind_unpack_unibind_tfbs          1
+total                                7
+
+Select jobs to execute...
+
+[Mon Jan 22 08:25:39 2024]
+Job 3: 
+        Downloads all PWMS from UniBind database
+        
+Reason: Missing output files: resources/data/unibind/damo_hg38_PWMs.tar.gz
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/14baf7ea6f1c85f1266357917be3722d_
+
+[Mon Jan 22 08:25:39 2024]
+Job 6: 
+        Downloads all TFBSs from UniBind database
+        
+Reason: Missing output files: resources/data/unibind/damo_hg38_TFBS_per_TF.tar.gz
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/14baf7ea6f1c85f1266357917be3722d_
+[Mon Jan 22 08:25:41 2024]
+Finished job 3.
+1 of 7 steps (14%) done
+Select jobs to execute...
+
+[Mon Jan 22 08:25:41 2024]
+Job 2: 
+        Unpacks UniBind PWM download
+        
+Reason: Missing output files: resources/data/unibind/damo_hg38_PWMs; Input files updated by another job: resources/data/unibind/damo_hg38_PWMs.tar.gz
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/14baf7ea6f1c85f1266357917be3722d_
+[Mon Jan 22 08:26:34 2024]
+Finished job 6.
+2 of 7 steps (29%) done
+Select jobs to execute...
+
+[Mon Jan 22 08:26:34 2024]
+Job 5: 
+        Unpacks UniBind TFBS download
+        
+Reason: Missing output files: resources/data/unibind/damo_hg38_TFBS_per_TF; Input files updated by another job: resources/data/unibind/damo_hg38_TFBS_per_TF.tar.gz
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/14baf7ea6f1c85f1266357917be3722d_
+[Mon Jan 22 08:27:53 2024]
+Finished job 2.
+3 of 7 steps (43%) done
+Removing temporary output resources/data/unibind/damo_hg38_PWMs.tar.gz.
+Select jobs to execute...
+
+[Mon Jan 22 08:27:53 2024]
+Job 1: 
+        Orgnzies UniBind damo PWMS by TF and profile
+        
+Reason: Missing output files: resources/data/unibind/damo_hg38_PWMS; Input files updated by another job: resources/data/unibind/damo_hg38_PWMs
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/14baf7ea6f1c85f1266357917be3722d_
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/14baf7ea6f1c85f1266357917be3722d_
+[Mon Jan 22 08:28:29 2024]
+Finished job 1.
+4 of 7 steps (57%) done
+Removing temporary output resources/data/unibind/damo_hg38_PWMs.
+[Mon Jan 22 08:31:40 2024]
+Finished job 5.
+5 of 7 steps (71%) done
+Removing temporary output resources/data/unibind/damo_hg38_TFBS_per_TF.tar.gz.
+Select jobs to execute...
+
+[Mon Jan 22 08:31:40 2024]
+Job 4: 
+        Orgnzies UniBind damos by TF and profile
+        
+Reason: Missing output files: resources/data/unibind/damo_hg38_TFBS; Input files updated by another job: resources/data/unibind/damo_hg38_TFBS_per_TF
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/14baf7ea6f1c85f1266357917be3722d_
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/14baf7ea6f1c85f1266357917be3722d_
+[Mon Jan 22 08:32:19 2024]
+Finished job 4.
+6 of 7 steps (86%) done
+Removing temporary output resources/data/unibind/damo_hg38_TFBS_per_TF.
+Select jobs to execute...
+
+[Mon Jan 22 08:32:20 2024]
+Job 0: 
+        DEPLOYING UNIBIND...
+        
+Reason: Input files updated by another job: resources/data/unibind/damo_hg38_TFBS, resources/data/unibind/damo_hg38_PWMS
+
+[Mon Jan 22 08:32:20 2024]
+Finished job 0.
+7 of 7 steps (100%) done
+Complete log: .snakemake/log/2024-01-22T082534.729759.snakemake.log

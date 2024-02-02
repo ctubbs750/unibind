@@ -1,0 +1,36 @@
+Building DAG of jobs...
+Your conda installation is not configured to use strict channel priorities. This is however crucial for having robust and correct environments (for details, see https://conda-forge.org/docs/user/tipsandtricks.html). Please consider to configure strict priorities by executing 'conda config --set channel_priority strict'.
+Using shell: /usr/bin/bash
+Provided cores: 24
+Rules claiming more threads will be scaled down.
+Job stats:
+job                              count
+-----------------------------  -------
+all                                  1
+unibind_reduce_data_to_filter        1
+total                                2
+
+Select jobs to execute...
+
+[Tue Jan 23 13:00:21 2024]
+Job 7: 
+        Reducess downloaded data to those that are human
+        
+Reason: Missing output files: results/unibind/damo_hg38_TFBS_filter, results/unibind/damo_hg38_PWMS_filter
+
+RuleException in rule unibind_reduce_data_to_filter in file /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/unibind/workflow/rules/unibind.smk, line 249:
+NameError: The name 'tf_name' is unknown in this context. Please make sure that you defined that variable. Also note that braces not used for variable access have to be escaped by repeating them, i.e. {{print $1}}, when formatting the following:
+
+        while read p; do
+            # Extract line info
+            tf_name=$(echo "$p" | awk '{{print $1}}')
+            echo $tf_name
+            profile=$(echo "$p" | awk '{{print $2}}')
+            # Setup dirs
+            mkdir -p {output.pwms}/${tf_name}
+            mkdir -p {output.tfbs}/${tf_name}
+            # Move relevant dir/files to output
+            cp -r {input.pwms}/${tf_name}/${profile} {output.pwms}/${tf_name}
+            cp -r {input.tfbs}/${tf_name}/${profile} {output.tfbs}/${tf_name}
+        done < {input.profiles}
+        

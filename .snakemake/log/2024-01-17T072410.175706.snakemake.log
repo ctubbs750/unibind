@@ -1,0 +1,38 @@
+Building DAG of jobs...
+Your conda installation is not configured to use strict channel priorities. This is however crucial for having robust and correct environments (for details, see https://conda-forge.org/docs/user/tipsandtricks.html). Please consider to configure strict priorities by executing 'conda config --set channel_priority strict'.
+Using shell: /usr/bin/bash
+Provided cores: 24
+Rules claiming more threads will be scaled down.
+Job stats:
+job                      count
+---------------------  -------
+all                          1
+unibind_organize_pwms        1
+total                        2
+
+Select jobs to execute...
+
+[Wed Jan 17 07:24:15 2024]
+Job 1: 
+        Orgnzies UniBind damo PWMS by TF and profile
+        
+Reason: Missing output files: resources/data/unibind/damo_hg38_PWMS
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/14baf7ea6f1c85f1266357917be3722d_
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/14baf7ea6f1c85f1266357917be3722d_
+[Wed Jan 17 07:24:16 2024]
+Error in rule unibind_organize_pwms:
+    jobid: 1
+    input: resources/data/unibind/damo_hg38_PWMs_unpacked
+    output: resources/data/unibind/damo_hg38_PWMS
+    log: workflow/logs/organize_pwms.stdout, workflow/logs/organize_pwms.stderr (check log file(s) for error details)
+    conda-env: /home/tubbsca/snakemake_condas/14baf7ea6f1c85f1266357917be3722d_
+
+RuleException:
+CalledProcessError in file /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/unibind/workflow/rules/unibind.smk, line 106:
+Command 'source /panfs/accrepfs.vampire/home/tubbsca/miniforge-pypy3/bin/activate '/home/tubbsca/snakemake_condas/14baf7ea6f1c85f1266357917be3722d_'; set -euo pipefail;  python /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/unibind/.snakemake/scripts/tmpg7pd35m4.organize.py' returned non-zero exit status 1.
+  File "/panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/unibind/workflow/rules/unibind.smk", line 106, in __rule_organize_pwms
+  File "/accre/arch/easybuild/software/BinDist/Anaconda3/2022.05/lib/python3.9/concurrent/futures/thread.py", line 58, in run
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2024-01-17T072410.175706.snakemake.log

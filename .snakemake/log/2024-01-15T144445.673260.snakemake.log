@@ -1,0 +1,96 @@
+Building DAG of jobs...
+Your conda installation is not configured to use strict channel priorities. This is however crucial for having robust and correct environments (for details, see https://conda-forge.org/docs/user/tipsandtricks.html). Please consider to configure strict priorities by executing 'conda config --set channel_priority strict'.
+Creating conda environment workflow/envs/unibind.yaml...
+Downloading and installing remote packages.
+Environment for /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/unibind/workflow/rules/../envs/unibind.yaml created (location: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/14baf7ea6f1c85f1266357917be3722d_)
+Using shell: /usr/bin/bash
+Provided cores: 24
+Rules claiming more threads will be scaled down.
+Job stats:
+job                              count
+-----------------------------  -------
+all                                  1
+unibind_download_unibind_pwms        1
+unibind_flatten_unibind_pwms         1
+unibind_organize_files               1
+unibind_unpack_unibind_pwms          1
+unibind_unpack_unibind_tfbs          1
+total                                6
+
+Select jobs to execute...
+
+[Mon Jan 15 14:46:05 2024]
+Job 3: 
+        Downloads all PWMS from UniBind database
+        
+Reason: Missing output files: resources/data/unibind/damo_hg38_PWMs.tar.gz; Software environment definition has changed since last execution
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/14baf7ea6f1c85f1266357917be3722d_
+
+[Mon Jan 15 14:46:05 2024]
+Job 5: 
+        Unpacks UniBind TFBS download
+        
+Reason: Missing output files: resources/data/unibind/unibind/damo_hg38_TFBS_per_TF_unpacked
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/14baf7ea6f1c85f1266357917be3722d_
+[Mon Jan 15 14:46:07 2024]
+Finished job 3.
+1 of 6 steps (17%) done
+Select jobs to execute...
+
+[Mon Jan 15 14:46:07 2024]
+Job 2: 
+        Unpacks UniBind PWM download
+        
+Reason: Missing output files: resources/data/unibind/unibind/damo_hg38_PWMs_unpacked; Input files updated by another job: resources/data/unibind/damo_hg38_PWMs.tar.gz
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/14baf7ea6f1c85f1266357917be3722d_
+[Mon Jan 15 14:48:28 2024]
+Finished job 2.
+2 of 6 steps (33%) done
+Removing temporary output resources/data/unibind/damo_hg38_PWMs.tar.gz.
+Select jobs to execute...
+
+[Mon Jan 15 14:48:28 2024]
+Job 1: 
+        Flattens unpacked tarbell. Not great - for the moment just check for creation of first in OP.
+        Also removes all the empty dirs.
+        
+Reason: Input files updated by another job: resources/data/unibind/unibind/damo_hg38_PWMs_unpacked
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/14baf7ea6f1c85f1266357917be3722d_
+[Mon Jan 15 14:49:35 2024]
+Finished job 1.
+3 of 6 steps (50%) done
+Removing temporary output resources/data/unibind/unibind/damo_hg38_PWMs_unpacked.
+[Mon Jan 15 14:53:52 2024]
+Finished job 5.
+4 of 6 steps (67%) done
+Removing temporary output resources/data/unibind/damo_hg38_TFBS_per_TF.tar.gz.
+Select jobs to execute...
+
+[Mon Jan 15 14:53:52 2024]
+Job 4: 
+        Orgnzies UniBind damos by TF and profile
+        
+Reason: Missing output files: resources/data/unibind/unibind/damo_hg38_TFBS_per_TF_unpacked_organized; Input files updated by another job: resources/data/unibind/unibind/damo_hg38_TFBS_per_TF_unpacked
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/14baf7ea6f1c85f1266357917be3722d_
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/14baf7ea6f1c85f1266357917be3722d_
+[Mon Jan 15 14:53:55 2024]
+Error in rule unibind_organize_files:
+    jobid: 4
+    input: resources/data/unibind/unibind/damo_hg38_TFBS_per_TF_unpacked
+    output: resources/data/unibind/unibind/damo_hg38_TFBS_per_TF_unpacked_organized
+    log: workflow/logs/organize_files.stdout, workflow/logs/organize_files.stderr (check log file(s) for error details)
+    conda-env: /home/tubbsca/snakemake_condas/14baf7ea6f1c85f1266357917be3722d_
+
+RuleException:
+CalledProcessError in file /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/unibind/workflow/rules/unibind.smk, line 147:
+Command 'source /panfs/accrepfs.vampire/home/tubbsca/miniforge-pypy3/bin/activate '/home/tubbsca/snakemake_condas/14baf7ea6f1c85f1266357917be3722d_'; set -euo pipefail;  python /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/unibind/.snakemake/scripts/tmp_cafsjt8.organize.py' returned non-zero exit status 1.
+  File "/panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/unibind/workflow/rules/unibind.smk", line 147, in __rule_organize_files
+  File "/accre/arch/easybuild/software/BinDist/Anaconda3/2022.05/lib/python3.9/concurrent/futures/thread.py", line 58, in run
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2024-01-15T144445.673260.snakemake.log

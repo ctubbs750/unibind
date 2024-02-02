@@ -1,0 +1,68 @@
+Building DAG of jobs...
+Your conda installation is not configured to use strict channel priorities. This is however crucial for having robust and correct environments (for details, see https://conda-forge.org/docs/user/tipsandtricks.html). Please consider to configure strict priorities by executing 'conda config --set channel_priority strict'.
+Using shell: /usr/bin/bash
+Provided cores: 24
+Rules claiming more threads will be scaled down.
+Job stats:
+job                            count
+---------------------------  -------
+all                                1
+unibind_check_human_profile        1
+unibind_organize_tfbs              1
+unibind_unpack_unibind_tfbs        1
+total                              4
+
+Select jobs to execute...
+
+[Mon Jan 22 13:57:12 2024]
+Job 5: 
+        Unpacks UniBind TFBS download
+        
+Reason: Forced execution
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+
+[Mon Jan 22 13:57:13 2024]
+Job 7: 
+        Confirms each profile is homo sapiens.
+        
+Reason: Forced execution
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+Terminating processes on user request, this might take some time.
+[Mon Jan 22 13:57:33 2024]
+Error in rule unibind_check_human_profile:
+    jobid: 7
+    input: results/unibind/damo_hg38_PWMS
+    output: results/unibind/species_profiles.txt
+    log: workflow/logs/check_human_profile.stdout, workflow/logs/check_human_profile.stderr (check log file(s) for error details)
+    conda-env: /home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+    shell:
+        
+        coreapi get https://jaspar.elixir.no/api/v1/docs/
+        readarray -t profiles < <(find results/unibind/damo_hg38_PWMS -mindepth 2 -maxdepth 2 -name '*M*' -type d -exec basename {}  \;)
+        for profile in "${profiles[@]}";
+        do
+            echo "$profile"
+            species=$(coreapi action matrix read -p matrix_id="$profile" | jq '.species.[].name') || species="NaN"
+            tf_name=$(coreapi action matrix read -p matrix_id="$profile" | jq '.symbol') || tf_name="NaN"
+            printf '%s %s %s
+' "$tf_name" "$profile" "$species" >> results/unibind/species_profiles.txt
+        done
+        
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+[Mon Jan 22 13:57:33 2024]
+Error in rule unibind_unpack_unibind_tfbs:
+    jobid: 5
+    input: resources/data/unibind/damo_hg38_TFBS_per_TF.tar.gz
+    output: resources/data/unibind/damo_hg38_TFBS_per_TF
+    log: workflow/logs/unpack_unibind_tfbs.stdout, workflow/logs/unpack_unibind_tfbs.stderr (check log file(s) for error details)
+    conda-env: /home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+    shell:
+        
+        mkdir -p resources/data/unibind/damo_hg38_TFBS_per_TF && tar -xzf resources/data/unibind/damo_hg38_TFBS_per_TF.tar.gz -C resources/data/unibind
+        
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Complete log: .snakemake/log/2024-01-22T135701.454323.snakemake.log

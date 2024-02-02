@@ -1,0 +1,96 @@
+Building DAG of jobs...
+Your conda installation is not configured to use strict channel priorities. This is however crucial for having robust and correct environments (for details, see https://conda-forge.org/docs/user/tipsandtricks.html). Please consider to configure strict priorities by executing 'conda config --set channel_priority strict'.
+Using shell: /usr/bin/bash
+Provided cores: 24
+Rules claiming more threads will be scaled down.
+Job stats:
+job                              count
+-----------------------------  -------
+unibind_all                          1
+unibind_filter_tf_targets            1
+unibind_organize_pwms                1
+unibind_organize_tfbs                1
+unibind_profile_mapping              1
+unibind_reduce_data_to_filter        1
+unibind_unpack_unibind_pwms          1
+unibind_unpack_unibind_tfbs          1
+total                                8
+
+Select jobs to execute...
+
+[Fri Jan 26 05:42:29 2024]
+Job 2: Unpacks UniBind PWM download
+Reason: Missing output files: resources/data/unibind/damo_hg38_PWMs
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+
+[Fri Jan 26 05:42:29 2024]
+Job 5: Unpacks UniBind TFBS download
+Reason: Missing output files: resources/data/unibind/damo_hg38_TFBS_per_TF
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+[Fri Jan 26 05:43:57 2024]
+Finished job 2.
+1 of 8 steps (12%) done
+Select jobs to execute...
+
+[Fri Jan 26 05:43:57 2024]
+Job 1: Organizes UniBind damo PWMS by TF and profile
+Reason: Missing output files: results/unibind/damo_hg38_PWMS; Input files updated by another job: resources/data/unibind/damo_hg38_PWMs
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+[Fri Jan 26 05:44:34 2024]
+Finished job 1.
+2 of 8 steps (25%) done
+Removing temporary output resources/data/unibind/damo_hg38_PWMs.
+Select jobs to execute...
+
+[Fri Jan 26 05:44:39 2024]
+Job 9: Confirms each profile is homo sapiens.
+Reason: Missing output files: results/unibind/profile_mapping.txt; Input files updated by another job: results/unibind/damo_hg38_PWMS
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+[Fri Jan 26 05:46:38 2024]
+Finished job 5.
+3 of 8 steps (38%) done
+Select jobs to execute...
+
+[Fri Jan 26 05:46:38 2024]
+Job 4: Organizes UniBind damos by TF and profile
+Reason: Missing output files: results/unibind/damo_hg38_TFBS; Input files updated by another job: resources/data/unibind/damo_hg38_TFBS_per_TF
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+[Fri Jan 26 05:47:16 2024]
+Finished job 4.
+4 of 8 steps (50%) done
+Removing temporary output resources/data/unibind/damo_hg38_TFBS_per_TF.
+[Fri Jan 26 05:48:44 2024]
+Finished job 9.
+5 of 8 steps (62%) done
+Select jobs to execute...
+
+[Fri Jan 26 05:48:44 2024]
+Job 8: Reduces list of profiles to just those that are human and non-redundant.
+Reason: Missing output files: results/unibind/profile_mapping_filtered.txt; Input files updated by another job: results/unibind/profile_mapping.txt
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+[Fri Jan 26 05:48:45 2024]
+Error in rule unibind_filter_tf_targets:
+    jobid: 8
+    input: results/unibind/profile_mapping.txt
+    output: results/unibind/profile_mapping_filtered.txt
+    log: workflow/logs/filter_tf_targets.stdout, workflow/logs/filter_tf_targets.stderr (check log file(s) for error details)
+    conda-env: /home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_
+
+RuleException:
+CalledProcessError in file /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/unibind/workflow/rules/unibind.smk, line 391:
+Command 'source /panfs/accrepfs.vampire/home/tubbsca/miniforge-pypy3/bin/activate '/home/tubbsca/snakemake_condas/731e748426e5d2229fb04f545246a292_'; set -euo pipefail;  python /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/unibind/.snakemake/scripts/tmpx2ugnky_.profiles.py' returned non-zero exit status 1.
+  File "/panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/unibind/workflow/rules/unibind.smk", line 391, in __rule_filter_tf_targets
+  File "/accre/arch/easybuild/software/BinDist/Anaconda3/2022.05/lib/python3.9/concurrent/futures/thread.py", line 58, in run
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2024-01-26T054221.549514.snakemake.log
