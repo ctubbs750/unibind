@@ -70,7 +70,7 @@ def main():
         for index, entry in enumerate(zip(z_ics, prop_pos)):
             z = entry[0]
             prop_pos = entry[1]
-            if (z < -2 or prop_pos<0.75):
+            if (z < -2 or prop_pos<1):
                 # Now clean out profile and TFBS dirs
                 pwms_path = Path(f"{PWMS_DIR}/{tf_name}/{profile}/{biosamples[index]}")
                 tfbs_path = Path(f"{TFBS_DIR}/{tf_name}/{profile}/{biosamples[index][:-4]}.bed")
