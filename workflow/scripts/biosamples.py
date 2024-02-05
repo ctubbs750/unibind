@@ -87,8 +87,13 @@ def main():
     # Save fails
     fails.to_csv(OUTPUT, index=False, sep="\t")
     
-    # As a last step, remove empty directories from TFBS dirs and PWMS dirs
+    # As a last step, remove empty directories from TFBS dirs and PWMS dirs - these are TFs that lost all profiles from filtering
     for tf in Path(TFBS_DIR).glob("*"):
+        for profile in tf.glob("*"):
+            if len(list(profile.glob("*"))) == 0:
+                profile.rmdir()
+                tf.rmdir()
+    for tf in Path(PWMS_DIR).glob("*"):
         for profile in tf.glob("*"):
             if len(list(profile.glob("*"))) == 0:
                 profile.rmdir()
