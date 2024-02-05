@@ -24,8 +24,7 @@ def organize_files(extension: str, ip_folder: str, op_folder: str) -> None:
 
     # Split the info into different fields
     df[["exp_id", "celltype", "tf_name", "profile_root", "profile_stem", "damo"]] = df[
-        "info"
-    ].str.split(".", expand=True)
+        "info"].str.split(".", expand=True)
 
     # Create a profile tag
     df["profile"] = df["profile_root"] + "." + df["profile_stem"]
