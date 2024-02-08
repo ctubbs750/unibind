@@ -18,6 +18,9 @@ def organize_files(extension: str, ip_folder: str, op_folder: str) -> None:
     """Organizes Unibind download directories into TF/profile/datasets format"""
     # Get all files with the given extension
     paths = list(Path(ip_folder).rglob(f"*.{extension}"))
+    
+    print("Dflsak")
+    print(ip_folder, op_folder, paths)
 
     # Create a DataFrame with file paths and info
     df = pd.DataFrame({"path": paths, "info": [p.stem for p in paths]})

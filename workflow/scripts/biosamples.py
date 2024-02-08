@@ -10,7 +10,8 @@ from scipy.stats import zscore
 PWMS_DIR = snakemake.input[0]  # type: ignore
 TFBS_DIR = snakemake.input[1]  # type: ignore
 OUTPUT = snakemake.output[0]  # type: ignore
-
+Z_THRESH = -10
+PROP_POS_THRESH = 0
 
 # ------------- #
 # Functions     #
@@ -70,7 +71,7 @@ def main():
         for index, entry in enumerate(zip(z_ics, prop_pos)):
             z = entry[0]
             prop_pos = entry[1]
-            if (z < -2 or prop_pos<1):
+            if (z < Z_THRESH or prop_pos<PROP_POS_THRESH):
                 # Now clean out profile and TFBS dirs
                 pwms_path = Path(f"{PWMS_DIR}/{tf_name}/{profile}/{biosamples[index]}")
                 tfbs_path = Path(f"{TFBS_DIR}/{tf_name}/{profile}/{biosamples[index][:-4]}.bed")

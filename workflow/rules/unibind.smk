@@ -58,7 +58,7 @@ rule all:
     input:
         PWMS_ORGANIZED_FILTER,
         TFBS_ORGANIZED_FILTER,
-        BIOSAMPLE_FAILS,
+        #BIOSAMPLE_FAILS,
 
 
 rule download_unibind_pwms:
