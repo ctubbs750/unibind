@@ -1,0 +1,27 @@
+Building DAG of jobs...
+Your conda installation is not configured to use strict channel priorities. This is however crucial for having robust and correct environments (for details, see https://conda-forge.org/docs/user/tipsandtricks.html). Please consider to configure strict priorities by executing 'conda config --set channel_priority strict'.
+Using shell: /usr/bin/bash
+Provided cores: 24
+Rules claiming more threads will be scaled down.
+Job stats:
+job                       count
+----------------------  -------
+unibind_all                   1
+unibind_create_mapping        1
+total                         2
+
+Select jobs to execute...
+
+[Sat Feb 10 09:39:32 2024]
+Job 1: Creates mapping
+Reason: Missing output files: results/unibind/biosample_map.tsv
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/38855772cfa7ad3eb00034c2a749c667_
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/38855772cfa7ad3eb00034c2a749c667_
+Waiting at most 5 seconds for missing files.
+MissingOutputException in rule unibind_create_mapping in file /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/unibind/workflow/rules/unibind.smk, line 123:
+Job 1  completed successfully, but some output files are missing. Missing files after 5 seconds. This might be due to filesystem latency. If that is the case, consider to increase the wait time with --latency-wait:
+results/unibind/biosample_map.tsv
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2024-02-10T093927.233232.snakemake.log

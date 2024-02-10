@@ -1,0 +1,36 @@
+Building DAG of jobs...
+Your conda installation is not configured to use strict channel priorities. This is however crucial for having robust and correct environments (for details, see https://conda-forge.org/docs/user/tipsandtricks.html). Please consider to configure strict priorities by executing 'conda config --set channel_priority strict'.
+Using shell: /usr/bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Job stats:
+job                         count
+------------------------  -------
+unibind_all                     1
+unibind_fetch_thresholds        1
+total                           2
+
+Select jobs to execute...
+
+[Thu Feb  8 13:55:32 2024]
+Job 10: Creates map of biosamples to recommended score thresholds for scanning.
+Reason: Missing output files: results/unibind/biosample_thresholds.txt
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/38855772cfa7ad3eb00034c2a749c667_
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/38855772cfa7ad3eb00034c2a749c667_
+[Thu Feb  8 13:55:34 2024]
+Finished job 10.
+1 of 2 steps (50%) done
+Select jobs to execute...
+
+[Thu Feb  8 13:55:34 2024]
+localrule unibind_all:
+    input: results/unibind/damo_hg38_PWMS_filter, results/unibind/damo_hg38_TFBS_filter, results/unibind/biosample_thresholds.txt
+    jobid: 0
+    reason: Input files updated by another job: results/unibind/biosample_thresholds.txt
+    resources: tmpdir=/tmp
+
+[Thu Feb  8 13:55:34 2024]
+Finished job 0.
+2 of 2 steps (100%) done
+Complete log: .snakemake/log/2024-02-08T135527.285136.snakemake.log

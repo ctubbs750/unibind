@@ -1,0 +1,4 @@
+Building DAG of jobs...
+WildcardError in rule unibind_all in file /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/unibind/workflow/rules/unibind.smk, line 75:
+Wildcards in input files cannot be determined from output files:
+'type'

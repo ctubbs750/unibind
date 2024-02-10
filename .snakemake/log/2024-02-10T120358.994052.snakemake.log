@@ -1,0 +1,4 @@
+SyntaxError:
+Not all output, log and benchmark files of rule unibind_download_unibind contain the same wildcards. This is crucial though, in order to avoid that two or more jobs write to the same file.
+  File "/panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/unibind/workflow/Snakefile", line 21, in <module>
+  File "/panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/unibind/workflow/rules/unibind.smk", line 97, in <module>

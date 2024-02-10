@@ -1,0 +1,46 @@
+Building DAG of jobs...
+Your conda installation is not configured to use strict channel priorities. This is however crucial for having robust and correct environments (for details, see https://conda-forge.org/docs/user/tipsandtricks.html). Please consider to configure strict priorities by executing 'conda config --set channel_priority strict'.
+Using shell: /usr/bin/bash
+Provided cores: 24
+Rules claiming more threads will be scaled down.
+Job stats:
+job                     count
+--------------------  -------
+unibind_all                 1
+unibind_extract_pwms        1
+unibind_extract_tfbs        1
+total                       3
+
+Select jobs to execute...
+
+[Sat Feb 10 13:24:33 2024]
+Job 1: Extracts PWMs from tarball
+Reason: Missing output files: results/unibind/damo_hg38_PWMS_extracted
+
+[Sat Feb 10 13:24:33 2024]
+Job 5: Extracts TFBS from tarball
+Reason: Missing output files: results/unibind/damo_hg38_TFBS_extracted
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/38855772cfa7ad3eb00034c2a749c667_
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/38855772cfa7ad3eb00034c2a749c667_
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/38855772cfa7ad3eb00034c2a749c667_
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/38855772cfa7ad3eb00034c2a749c667_
+Waiting at most 5 seconds for missing files.
+MissingOutputException in rule unibind_extract_pwms in file /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/unibind/workflow/rules/unibind.smk, line 141:
+Job 1  completed successfully, but some output files are missing. Missing files after 5 seconds. This might be due to filesystem latency. If that is the case, consider to increase the wait time with --latency-wait:
+results/unibind/damo_hg38_PWMS_extracted
+Terminating processes on user request, this might take some time.
+[Sat Feb 10 13:26:39 2024]
+Error in rule unibind_extract_tfbs:
+    jobid: 5
+    input: resources/data/unibind/damo_hg38_TFBS.tar.gz, results/unibind/biosample_map.filter.tsv
+    output: results/unibind/damo_hg38_TFBS_extracted
+    log: workflow/logs/extract_tfbs.stdout, workflow/logs/extract_tfbs.stdout (check log file(s) for error details)
+    conda-env: /home/tubbsca/snakemake_condas/38855772cfa7ad3eb00034c2a749c667_
+
+RuleException:
+CalledProcessError in file /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/unibind/workflow/rules/unibind.smk, line 172:
+Command 'source /panfs/accrepfs.vampire/home/tubbsca/miniforge-pypy3/bin/activate '/home/tubbsca/snakemake_condas/38855772cfa7ad3eb00034c2a749c667_'; set -euo pipefail;  python /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/unibind/.snakemake/scripts/tmppcwons9_.extract.py' died with <Signals.SIGINT: 2>.
+  File "/panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/unibind/workflow/rules/unibind.smk", line 172, in __rule_extract_tfbs
+  File "/accre/arch/easybuild/software/BinDist/Anaconda3/2022.05/lib/python3.9/concurrent/futures/thread.py", line 58, in run
+Complete log: .snakemake/log/2024-02-10T132428.665314.snakemake.log

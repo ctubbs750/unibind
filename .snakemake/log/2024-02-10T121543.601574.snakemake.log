@@ -1,0 +1,47 @@
+Building DAG of jobs...
+Your conda installation is not configured to use strict channel priorities. This is however crucial for having robust and correct environments (for details, see https://conda-forge.org/docs/user/tipsandtricks.html). Please consider to configure strict priorities by executing 'conda config --set channel_priority strict'.
+Using shell: /usr/bin/bash
+Provided cores: 24
+Rules claiming more threads will be scaled down.
+Job stats:
+job                         count
+------------------------  -------
+unibind_all                     1
+unibind_create_mapping          1
+unibind_download_unibind        1
+unibind_flag_filters            1
+total                           4
+
+Select jobs to execute...
+
+[Sat Feb 10 12:15:48 2024]
+Job 3: Downloads Unibind PWMs for TFBs from UniBind database
+Reason: Missing output files: resources/data/unibind/damo_hg38_PWMS.tar.gz
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/38855772cfa7ad3eb00034c2a749c667_
+[Sat Feb 10 12:17:28 2024]
+Finished job 3.
+1 of 4 steps (25%) done
+Select jobs to execute...
+
+[Sat Feb 10 12:17:28 2024]
+Job 2: Creates mapping
+Reason: Input files updated by another job: resources/data/unibind/damo_hg38_PWMS.tar.gz; Set of input files has changed since last execution
+
+[Sat Feb 10 12:17:28 2024]
+Error in rule unibind_create_mapping:
+    jobid: 2
+    input: resources/data/unibind/damo_hg38_PWMS.tar.gz
+    output: results/unibind/biosample_map.tsv
+    log: workflow/logs/create_mapping.stdout, workflow/logs/create_mapping.stderr (check log file(s) for error details)
+    conda-env: /home/tubbsca/snakemake_condas/38855772cfa7ad3eb00034c2a749c667_
+
+RuleException:
+WorkflowError in file /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/unibind/workflow/rules/unibind.smk, line 116:
+Failed to open source file /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/unibind/workflow/rules/../scripts/mapping_new.py
+FileNotFoundError: [Errno 2] No such file or directory: '/panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/unibind/workflow/rules/../scripts/mapping_new.py'
+  File "/panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/unibind/workflow/rules/unibind.smk", line 116, in __rule_create_mapping
+  File "/accre/arch/easybuild/software/BinDist/Anaconda3/2022.05/lib/python3.9/concurrent/futures/thread.py", line 58, in run
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2024-02-10T121543.601574.snakemake.log

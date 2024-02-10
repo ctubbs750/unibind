@@ -1,0 +1,23 @@
+Building DAG of jobs...
+Your conda installation is not configured to use strict channel priorities. This is however crucial for having robust and correct environments (for details, see https://conda-forge.org/docs/user/tipsandtricks.html). Please consider to configure strict priorities by executing 'conda config --set channel_priority strict'.
+Using shell: /usr/bin/bash
+Provided cores: 24
+Rules claiming more threads will be scaled down.
+Job stats:
+job                         count
+------------------------  -------
+unibind_all                     1
+unibind_create_mapping          1
+unibind_download_unibind        1
+unibind_flag_filters            1
+total                           4
+
+Select jobs to execute...
+
+[Sat Feb 10 12:15:19 2024]
+Job 3: Downloads Unibind PWMs for TFBs from UniBind database
+Reason: Missing output files: resources/data/unibind/damo_hg38_PWMS.tar.gz
+
+RuleException in rule unibind_download_unibind in file /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/unibind/workflow/rules/unibind.smk, line 85:
+AttributeError: 'Params' object has no attribute 'tfbsurl', when formatting the following:
+curl -o {output.pwms} {params.pwms_url} && curl -o {output.tfbs} {params.tfbsurl}

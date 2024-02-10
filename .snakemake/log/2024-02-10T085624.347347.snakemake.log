@@ -1,0 +1,48 @@
+Building DAG of jobs...
+Your conda installation is not configured to use strict channel priorities. This is however crucial for having robust and correct environments (for details, see https://conda-forge.org/docs/user/tipsandtricks.html). Please consider to configure strict priorities by executing 'conda config --set channel_priority strict'.
+Using shell: /usr/bin/bash
+Provided cores: 24
+Rules claiming more threads will be scaled down.
+Job stats:
+job                            count
+---------------------------  -------
+unibind_all                        1
+unibind_flatten_pwms               1
+unibind_unpack_unibind_pwms        1
+total                              3
+
+Select jobs to execute...
+
+[Sat Feb 10 08:56:29 2024]
+Job 2: Unpacks UniBind PWM download
+Reason: Missing output files: resources/data/unibind/damo_hg38_PWMs
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/38855772cfa7ad3eb00034c2a749c667_
+[Sat Feb 10 08:57:49 2024]
+Finished job 2.
+1 of 3 steps (33%) done
+Select jobs to execute...
+
+[Sat Feb 10 08:57:49 2024]
+Job 1: Flattens PWM dir
+Reason: Missing output files: results/unibind/damo_hg38_PWMS/flattened; Input files updated by another job: resources/data/unibind/damo_hg38_PWMs
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/38855772cfa7ad3eb00034c2a749c667_
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/38855772cfa7ad3eb00034c2a749c667_
+[Sat Feb 10 09:00:47 2024]
+Finished job 1.
+2 of 3 steps (67%) done
+Removing temporary output resources/data/unibind/damo_hg38_PWMs.
+Select jobs to execute...
+
+[Sat Feb 10 09:00:53 2024]
+localrule unibind_all:
+    input: results/unibind/damo_hg38_PWMS/flattened
+    jobid: 0
+    reason: Input files updated by another job: results/unibind/damo_hg38_PWMS/flattened
+    resources: tmpdir=/tmp
+
+[Sat Feb 10 09:00:53 2024]
+Finished job 0.
+3 of 3 steps (100%) done
+Complete log: .snakemake/log/2024-02-10T085624.347347.snakemake.log
